@@ -1,9 +1,10 @@
-package com.example.SpringMongoPoject.Entity;
+package com.example.SpringMongoPoject.Entity.Login;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -16,7 +17,8 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document
+@Document(collection = "appUser")
+@Builder
 public class AppUser {
     @Id
     private String id;

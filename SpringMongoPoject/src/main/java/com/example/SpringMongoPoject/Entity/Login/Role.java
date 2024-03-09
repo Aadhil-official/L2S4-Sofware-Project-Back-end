@@ -1,4 +1,4 @@
-package com.example.SpringMongoPoject.Entity;
+package com.example.SpringMongoPoject.Entity.Login;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
