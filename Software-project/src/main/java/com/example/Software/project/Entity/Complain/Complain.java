@@ -8,10 +8,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document
+@Document(collection = "complaints")
 public class Complain {
     @Id
-    private Integer complainId;
+    private String complainId;
     private String subject;
     private String email;
     private String object;
