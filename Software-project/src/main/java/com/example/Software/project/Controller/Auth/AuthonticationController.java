@@ -1,9 +1,10 @@
 package com.example.Software.project.Controller.Auth;
 
 import com.example.Software.project.Controller.Auth.Response.UserInfoResponse;
-//import com.example.Software.project.Controller.Auth.MessageResponse;
-//import com.example.Software.project.Controller.Auth.AuthonticationRequest;//LoginRequest
-//import com.example.Software.project.Controller.Auth.RegisterRequest;//SignupRequest
+import jakarta.validation.constraints.Email;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.example.Software.project.Entity.Forgetpass.UpdatePasswordRequest;
 import com.example.Software.project.Entity.Login.AppUser;
 import com.example.Software.project.Entity.Login.LogRole;
 import com.example.Software.project.Entity.Login.Role;
@@ -12,9 +13,15 @@ import com.example.Software.project.Repo.Login.RoleRepo;
 import com.example.Software.project.config.JwtUtils;
 import com.example.Software.project.config.UserDetailsImpl;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,9 +34,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -54,12 +59,19 @@ public class AuthonticationController {
     final
     JwtUtils jwtUtils;
 
-    public AuthonticationController(AuthenticationManager authenticationManager, AppUserRepo userRepository, RoleRepo roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils) {
+    private final Map<String, String> otpStorage = new HashMap<>();
+
+
+    private final JavaMailSender emailSender;
+
+    @Autowired
+    public AuthonticationController(AuthenticationManager authenticationManager, AppUserRepo userRepository, RoleRepo roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils, JavaMailSender emailSender) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.encoder = encoder;
         this.jwtUtils = jwtUtils;
+        this.emailSender = emailSender;
     }
 
     @PostMapping("/signin")
@@ -141,5 +153,107 @@ public class AuthonticationController {
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+
+
+
+    @PostMapping("/update-password")
+    public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest) {
+        Optional<AppUser> optionalUser = userRepository.findByEmail(updatePasswordRequest.getEmail());
+        if (optionalUser.isPresent()) {
+            AppUser user = optionalUser.get();
+            if (validateOTP(updatePasswordRequest.getEmail(), updatePasswordRequest.getOtp())) {
+                user.setPassword(encoder.encode(updatePasswordRequest.getNewPassword()));
+                userRepository.save(user);
+                return ResponseEntity.ok(new MessageResponse("Password updated successfully!"));
+            } else {
+                return ResponseEntity.badRequest().body(new MessageResponse("Invalid OTP!"));
+            }
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("User not found with email: " + updatePasswordRequest.getEmail()));
+        }
+    }
+
+    private boolean validateOTP(String email, String otp) {
+        String storedOTP = otpStorage.get(email);
+        return storedOTP != null && storedOTP.equals(otp);
+    }
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthonticationController.class);
+    @PostMapping("/send-otp")
+    public ResponseEntity<?> sendOTP(@RequestBody String email) {
+//    String email1 = requestBody.get("email");
+        String trimmedEmail = email.trim();
+        logger.debug("Received request at /endpoint");
+        // Generate OTP
+        String otp = generateOTP();
+
+        // Save OTP in storage
+        otpStorage.put(trimmedEmail, otp);
+
+        // Send OTP to user via email or SMS (not implemented)
+        sendOTPEmail(trimmedEmail, otp);
+
+        return ResponseEntity.ok(new MessageResponse("OTP sent successfully!"));
+    }
+
+//    private void sendOTPEmail(String email, String otp) {
+//
+//
+//        // Trim whitespace from the email address
+//        String trimmedEmail = email.trim();
+//
+//        // Validate email address format
+////        if (!isValidEmail(trimmedEmail)) {
+////            // Log error or throw an exception
+////            // Handle the error gracefully
+////            return;
+////        }
+//
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setTo(trimmedEmail);
+//        message.setSubject("Your OTP");
+//        message.setText("Your OTP is: " + otp);
+//
+//        emailSender.send(message);
+//    }
+
+    private void sendOTPEmail(String email, String otp) {
+
+        String subject = "Your OTP";
+        String text = "Your OTP is: " + otp;
+
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+//        String trimmedEmail = email.trim();
+        try {
+            helper.setTo(email);
+            helper.setSubject(subject);
+            helper.setText(text);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        emailSender.send(message);
+    }
+
+
+    private boolean isValidEmail(String email) {
+        // Implement email validation logic here
+        // You can use regular expressions or libraries like Apache Commons Validator
+        // Example using regular expression:
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return email.matches(emailRegex);
+    }
+
+
+    private String generateOTP() {
+        Random random = new Random();
+        int otpLength = 6;
+        StringBuilder otp = new StringBuilder();
+        for (int i = 0; i < otpLength; i++) {
+            otp.append(random.nextInt(10));
+        }
+        return otp.toString();
     }
 }
