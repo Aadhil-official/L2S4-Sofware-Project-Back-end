@@ -2,14 +2,20 @@ package com.example.Software.project.Controller.Complain;
 
 import com.example.Software.project.Entity.Complain.Complain;
 import com.example.Software.project.Repo.Complain.ComplainRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class ComplainCont {
+    private final List<SseEmitter> sseEmitters = new CopyOnWriteArrayList<>();
     private final ComplainRepo complainRepo;
 
     public ComplainCont(ComplainRepo complainRepo) {
@@ -24,5 +30,25 @@ public class ComplainCont {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to submit complaint");
         }
+    }
+
+    @PostMapping("/findcomplaint")
+    public ResponseEntity<?> findAllComplaint() {
+        try {
+            List<Complain> complains = complainRepo.findAll();
+            return ResponseEntity.ok().body(complains);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("This is error: " + e.getMessage());
+        }
+    }
+
+
+    @GetMapping("/complaints/updates")
+    public SseEmitter complaintUpdates() {
+        SseEmitter emitter = new SseEmitter();
+        sseEmitters.add(emitter);
+        emitter.onCompletion(() -> sseEmitters.remove(emitter));
+        emitter.onTimeout(() -> sseEmitters.remove(emitter));
+        return emitter;
     }
 }

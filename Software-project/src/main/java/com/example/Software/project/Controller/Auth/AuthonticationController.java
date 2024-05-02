@@ -1,7 +1,8 @@
 package com.example.Software.project.Controller.Auth;
 
 import com.example.Software.project.Controller.Auth.Response.UserInfoResponse;
-import jakarta.validation.constraints.Email;
+//import jakarta.validation.constraints.Email;
+import com.example.Software.project.Entity.Forgetpass.ForEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.Software.project.Entity.Forgetpass.UpdatePasswordRequest;
@@ -19,8 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
+//import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+//import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -114,32 +116,34 @@ public class AuthonticationController {
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
+
         // Create new user's account
         AppUser user = new AppUser(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+                encoder.encode(signUpRequest.getPassword())); // Encode and save the generated password
 
+        // Save other user details
         Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
+            System.out.println(strRoles);
             Role userRole = roleRepository.findByName(LogRole.USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
+            System.out.println(strRoles);
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
                         Role adminRole = roleRepository.findByName(LogRole.ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
-
                         break;
                     case "mod":
                         Role modRole = roleRepository.findByName(LogRole.ADMIN_MODERATOR)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
-
                         break;
                     default:
                         Role userRole = roleRepository.findByName(LogRole.USER)
@@ -150,12 +154,20 @@ public class AuthonticationController {
         }
 
         user.setRoles(roles);
+
+        // Save the user to the database
         userRepository.save(user);
+
+        String subject="";
+        String object = "";
+
+        sendEmail(signUpRequest.getEmail(),signUpRequest.getPassword(), subject, object);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
 
+//-------------------------------------------
 
 
     @PostMapping("/update-password")
@@ -180,72 +192,42 @@ public class AuthonticationController {
         return storedOTP != null && storedOTP.equals(otp);
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthonticationController.class);
+//    private static final Logger logger = LoggerFactory.getLogger(AuthonticationController.class);
     @PostMapping("/send-otp")
-    public ResponseEntity<?> sendOTP(@RequestBody String email) {
+    public ResponseEntity<?> sendOTP(@RequestBody ForEmail forEmail) {
 //    String email1 = requestBody.get("email");
+//        System.out.println(forEmail.getEmail());
+        String email = forEmail.getEmail();
         String trimmedEmail = email.trim();
-        logger.debug("Received request at /endpoint");
+//        logger.debug("Received request at /endpoint");
         // Generate OTP
         String otp = generateOTP();
 
         // Save OTP in storage
         otpStorage.put(trimmedEmail, otp);
 
+        String subject="";
+        String object = "";
+
         // Send OTP to user via email or SMS (not implemented)
-        sendOTPEmail(trimmedEmail, otp);
+        sendEmail(trimmedEmail, otp,subject,object);
 
         return ResponseEntity.ok(new MessageResponse("OTP sent successfully!"));
     }
 
-//    private void sendOTPEmail(String email, String otp) {
-//
-//
-//        // Trim whitespace from the email address
-//        String trimmedEmail = email.trim();
-//
-//        // Validate email address format
-////        if (!isValidEmail(trimmedEmail)) {
-////            // Log error or throw an exception
-////            // Handle the error gracefully
-////            return;
-////        }
-//
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        message.setTo(trimmedEmail);
-//        message.setSubject("Your OTP");
-//        message.setText("Your OTP is: " + otp);
-//
-//        emailSender.send(message);
-//    }
 
-    private void sendOTPEmail(String email, String otp) {
-
-        String subject = "Your OTP";
-        String text = "Your OTP is: " + otp;
-
+    private void sendEmail(String email, String password, String subject, String object) {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
-//        String trimmedEmail = email.trim();
         try {
             helper.setTo(email);
             helper.setSubject(subject);
-            helper.setText(text);
+            helper.setText(object + password);
         } catch (MessagingException e) {
             e.printStackTrace();
         }
         emailSender.send(message);
     }
-
-
-    private boolean isValidEmail(String email) {
-        // Implement email validation logic here
-        // You can use regular expressions or libraries like Apache Commons Validator
-        // Example using regular expression:
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        return email.matches(emailRegex);
-    }
-
 
     private String generateOTP() {
         Random random = new Random();
