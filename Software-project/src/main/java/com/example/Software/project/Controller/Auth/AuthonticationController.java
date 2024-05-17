@@ -50,11 +50,9 @@ public class AuthonticationController {
 
     private final AuthenticationManager authenticationManager;
 
-    final
-    AppUserRepo userRepository;
+    private final AppUserRepo userRepository;
 
-    final
-    RoleRepo roleRepository;
+    private final RoleRepo roleRepository;
 
     private final PasswordEncoder encoder;
 
@@ -82,6 +80,9 @@ public class AuthonticationController {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
+
+        System.out.println(encoder.encode(loginRequest.getPassword()));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -93,7 +94,6 @@ public class AuthonticationController {
                 .collect(Collectors.toList());
 
         //GrantedAuthority::getAuthority
-
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .body(new UserInfoResponse(userDetails.getId(),
@@ -116,6 +116,8 @@ public class AuthonticationController {
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
+//        String pass = generateNumberPass();
+
 
         // Create new user's account
         AppUser user = new AppUser(signUpRequest.getUsername(),
@@ -127,9 +129,8 @@ public class AuthonticationController {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            System.out.println(strRoles);
             Role userRole = roleRepository.findByName(LogRole.USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    .orElseThrow(() -> new RuntimeException("Error: Role is empty give correct one."));
             roles.add(userRole);
         } else {
             System.out.println(strRoles);
@@ -158,8 +159,8 @@ public class AuthonticationController {
         // Save the user to the database
         userRepository.save(user);
 
-        String subject="";
-        String object = "";
+        String subject="Welcome";
+        String object = "pppppppp";
 
         sendEmail(signUpRequest.getEmail(),signUpRequest.getPassword(), subject, object);
 
@@ -177,6 +178,7 @@ public class AuthonticationController {
             AppUser user = optionalUser.get();
             if (validateOTP(updatePasswordRequest.getEmail(), updatePasswordRequest.getOtp())) {
                 user.setPassword(encoder.encode(updatePasswordRequest.getNewPassword()));
+//                System.out.println(encoder.encode(updatePasswordRequest.getNewPassword()));
                 userRepository.save(user);
                 return ResponseEntity.ok(new MessageResponse("Password updated successfully!"));
             } else {
@@ -201,7 +203,7 @@ public class AuthonticationController {
         String trimmedEmail = email.trim();
 //        logger.debug("Received request at /endpoint");
         // Generate OTP
-        String otp = generateOTP();
+        String otp = generateNumber();
 
         // Save OTP in storage
         otpStorage.put(trimmedEmail, otp);
@@ -229,7 +231,7 @@ public class AuthonticationController {
         emailSender.send(message);
     }
 
-    private String generateOTP() {
+    private String generateNumber() {
         Random random = new Random();
         int otpLength = 6;
         StringBuilder otp = new StringBuilder();
@@ -238,4 +240,14 @@ public class AuthonticationController {
         }
         return otp.toString();
     }
+
+//    private String generateNumberPass() {
+//        Random random = new Random();
+//        int otpLength = 8;
+//        StringBuilder otp = new StringBuilder();
+//        for (int i = 0; i < otpLength; i++) {
+//            otp.append(random.nextInt(10));
+//        }
+//        return otp.toString();
+//    }
 }

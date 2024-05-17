@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface RoleRepo extends MongoRepository<Role,String> {
     Optional<Role> findByName(LogRole name);
+
+    Boolean existsByName(LogRole name);
 }

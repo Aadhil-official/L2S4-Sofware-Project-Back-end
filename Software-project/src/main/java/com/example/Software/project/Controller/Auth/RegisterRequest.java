@@ -26,13 +26,13 @@ public class RegisterRequest {
     private Set<String> roles;
 
     @NotBlank
-    @Size(min = 6, max = 40)
+    @Size(min = 8, max = 40)
     private String password = generatePassword();
 
 
     private String generatePassword() {
         Random random = new Random();
-        int otpLength = 6;
+        int otpLength = 8;
         StringBuilder pass = new StringBuilder();
         for (int i = 0; i < otpLength; i++) {
             pass.append(random.nextInt(10));
