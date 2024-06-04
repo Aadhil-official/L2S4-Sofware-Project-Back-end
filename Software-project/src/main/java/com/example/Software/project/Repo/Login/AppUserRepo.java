@@ -5,12 +5,15 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
+//To directly connect by appuser collection from mongodb to make all crud operations
 public interface AppUserRepo extends MongoRepository<AppUser,String> {
-    Optional<AppUser> findByUsername(String username);
 
+    //to find the specific appuser by username from db for that I create the transectional oparation for this(as json file)
+    Optional<AppUser> findByUsername(String username);
+//the meaning of optional there can be no matching username found
     Optional<AppUser> findByEmail(String email);
 
-    Boolean existsByUsername(String username);
+    Boolean existsByUsername(String username); //check and give the out as boolean
 
     Boolean existsByEmail(String email);
 }

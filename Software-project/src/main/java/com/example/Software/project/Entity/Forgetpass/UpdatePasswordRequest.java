@@ -7,10 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Document
+//Update password request entity (for forget password)
+@Data //to make all setters and getters
+@AllArgsConstructor //for build the all args constructor
+@NoArgsConstructor //for build the all args constructor
+@Document //to make collection
 public class UpdatePasswordRequest {
     @Email
     String email;

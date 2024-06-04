@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+//Request body for login part
 @Data
 @Document(collection = "roles")
 @NoArgsConstructor

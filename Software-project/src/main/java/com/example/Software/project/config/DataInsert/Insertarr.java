@@ -48,7 +48,9 @@ public class Insertarr {
                 adminUser.setUsername("Admin");
                 adminUser.setEmail("aadhil8336@gmail.com");
                 adminUser.setPassword(encoder.encode(pass));
-
+                adminUser.setUsergroup("anadmin");
+                adminUser.setAddress("ArctictPvt(Ltd)");
+                adminUser.setTel("+94750213273");
                 // Assign role to admin user
                 Set<Role> roles = new HashSet<>();
                 Role adminrole = repository.findByName(LogRole.ADMIN)
@@ -76,9 +78,9 @@ public class Insertarr {
         if (!repository.existsByName(LogRole.USER)) {
             repository.save(new Role(LogRole.USER));
         }
-        if (!repository.existsByName(LogRole.ADMIN_MODERATOR)) {
-            repository.save(new Role(LogRole.ADMIN_MODERATOR));
-        }
+//        if (!repository.existsByName(LogRole.ADMIN_MODERATOR)) {
+//            repository.save(new Role(LogRole.ADMIN_MODERATOR));
+//        }
         if (!repository.existsByName(LogRole.ADMIN)) {
             repository.save(new Role(LogRole.ADMIN));
         }

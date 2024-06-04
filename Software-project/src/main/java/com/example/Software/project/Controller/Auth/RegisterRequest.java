@@ -2,6 +2,7 @@ package com.example.Software.project.Controller.Auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,19 @@ public class RegisterRequest {
     @Email
     private String email;
 
+    @NotBlank
+    @Size(min = 1, max = 150)
+//    @Pattern(regexp = "^[^@]+$", message = "Address must not be an email address")
+    private String address;
+
+    @NotBlank
+    @Size(min = 1, max = 150)
+    private String usergroup;
+
+    @NotBlank
+    @Size(max = 20)
+//    @Pattern(regexp = "^\\+\\d{11}$")
+    private String tel;
 
     private Set<String> roles;
 

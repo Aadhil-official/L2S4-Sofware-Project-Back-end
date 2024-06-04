@@ -4,6 +4,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+//To give loggers for messages (that use in postman to identify the situation)
 @RestController
 public class LogController {
 

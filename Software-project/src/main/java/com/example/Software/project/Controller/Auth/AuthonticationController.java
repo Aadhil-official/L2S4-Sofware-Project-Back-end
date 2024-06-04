@@ -3,8 +3,8 @@ package com.example.Software.project.Controller.Auth;
 import com.example.Software.project.Controller.Auth.Response.UserInfoResponse;
 //import jakarta.validation.constraints.Email;
 import com.example.Software.project.Entity.Forgetpass.ForEmail;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import com.example.Software.project.Entity.Forgetpass.UpdatePasswordRequest;
 import com.example.Software.project.Entity.Login.AppUser;
 import com.example.Software.project.Entity.Login.LogRole;
@@ -99,6 +99,9 @@ public class AuthonticationController {
                 .body(new UserInfoResponse(userDetails.getId(),
                         userDetails.getUsername(),
                         userDetails.getEmail(),
+                        userDetails.getAddress(),
+                        userDetails.getUsergroup(),
+                        userDetails.getTel(),
                         roles));
     }
 
@@ -122,7 +125,12 @@ public class AuthonticationController {
         // Create new user's account
         AppUser user = new AppUser(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
+                signUpRequest.getAddress(),
+                signUpRequest.getUsergroup(),
+                signUpRequest.getTel(),
                 encoder.encode(signUpRequest.getPassword())); // Encode and save the generated password
+
+        System.out.println(signUpRequest);
 
         // Save other user details
         Set<String> strRoles = signUpRequest.getRoles();
@@ -141,11 +149,11 @@ public class AuthonticationController {
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
                         break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName(LogRole.ADMIN_MODERATOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-                        break;
+//                    case "mod":
+//                        Role modRole = roleRepository.findByName(LogRole.ADMIN_MODERATOR)
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//                        roles.add(modRole);
+//                        break;
                     default:
                         Role userRole = roleRepository.findByName(LogRole.USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -160,7 +168,7 @@ public class AuthonticationController {
         userRepository.save(user);
 
         String subject="Welcome";
-        String object = "pppppppp";
+        String object = "pppppppp"+"This is your group"+signUpRequest.getUsergroup()+" You from"+signUpRequest.getAddress();
 
         sendEmail(signUpRequest.getEmail(),signUpRequest.getPassword(), subject, object);
 
