@@ -51,7 +51,6 @@ public class SecurityConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
-
     @Bean
     public PasswordEncoder passwordEncoder()
     {
@@ -66,7 +65,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers("/api/test/complaints/updates").permitAll()
+                              .anyRequest().authenticated()
                 );
 
         http.authenticationProvider(authenticationProvider());

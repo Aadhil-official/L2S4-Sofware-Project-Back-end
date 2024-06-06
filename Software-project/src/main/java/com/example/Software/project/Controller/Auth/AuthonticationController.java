@@ -16,6 +16,8 @@ import com.example.Software.project.config.UserDetailsImpl;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -81,7 +83,7 @@ public class AuthonticationController {
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
 
-        System.out.println(encoder.encode(loginRequest.getPassword()));
+//        System.out.println(encoder.encode(loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -130,7 +132,7 @@ public class AuthonticationController {
                 signUpRequest.getTel(),
                 encoder.encode(signUpRequest.getPassword())); // Encode and save the generated password
 
-        System.out.println(signUpRequest);
+//        System.out.println(signUpRequest);
 
         // Save other user details
         Set<String> strRoles = signUpRequest.getRoles();
@@ -141,7 +143,7 @@ public class AuthonticationController {
                     .orElseThrow(() -> new RuntimeException("Error: Role is empty give correct one."));
             roles.add(userRole);
         } else {
-            System.out.println(strRoles);
+//            System.out.println(strRoles);
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
@@ -173,6 +175,19 @@ public class AuthonticationController {
         sendEmail(signUpRequest.getEmail(),signUpRequest.getPassword(), subject, object);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @PostMapping("/signout")
+    public ResponseEntity<?> signOut(@RequestBody Map<String, Boolean> requestBody, HttpServletResponse response) {
+        Boolean checked = requestBody.get("checked");
+        if (checked != null && !checked) {
+            ResponseCookie cleanJwtCookie = jwtUtils.getCleanJwtCookie();
+            response.addHeader(HttpHeaders.SET_COOKIE, cleanJwtCookie.toString());
+            System.out.println("Signed out");
+            return ResponseEntity.ok(new MessageResponse("Signed out successfully!"));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Invalid request!"));
+        }
     }
 
 
