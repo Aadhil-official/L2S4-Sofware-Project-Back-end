@@ -2,13 +2,13 @@ package com.example.Software.project.Controller.Auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+//import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+//import org.springframework.beans.factory.annotation.Value;
+//import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import java.util.HashSet;
+//import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -53,5 +53,4 @@ public class RegisterRequest {
         }
         return pass.toString();
     }
-
 }

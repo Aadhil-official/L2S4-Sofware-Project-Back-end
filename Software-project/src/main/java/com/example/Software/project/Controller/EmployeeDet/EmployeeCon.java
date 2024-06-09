@@ -28,7 +28,7 @@ public class EmployeeCon {
             List<AppUserDTO> appUserDtos = appUsers.stream()
                     .map(user -> new AppUserDTO(user.getUsername(), user.getAddress(), user.getTel(), user.getRoles()))
                     .collect(Collectors.toList());
-            System.out.println(appUserDtos);
+//            System.out.println(appUserDtos);
             return ResponseEntity.ok().body(appUserDtos);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("This is error: " + e.getMessage());

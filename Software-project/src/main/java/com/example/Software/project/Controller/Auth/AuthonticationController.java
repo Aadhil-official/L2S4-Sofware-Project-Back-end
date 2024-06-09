@@ -222,6 +222,7 @@ public class AuthonticationController {
     public ResponseEntity<?> sendOTP(@RequestBody ForEmail forEmail) {
 //    String email1 = requestBody.get("email");
 //        System.out.println(forEmail.getEmail());
+        if (userRepository.existsByEmail(forEmail.getEmail())){
         String email = forEmail.getEmail();
         String trimmedEmail = email.trim();
 //        logger.debug("Received request at /endpoint");
@@ -238,6 +239,10 @@ public class AuthonticationController {
         sendEmail(trimmedEmail, otp,subject,object);
 
         return ResponseEntity.ok(new MessageResponse("OTP sent successfully!"));
+        }else {
+            return ResponseEntity.badRequest().body((new MessageResponse("The use already exist")));
+        }
+
     }
 
 
