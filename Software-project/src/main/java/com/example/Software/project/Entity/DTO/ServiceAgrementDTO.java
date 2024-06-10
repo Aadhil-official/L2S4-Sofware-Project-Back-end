@@ -1,13 +1,20 @@
 package com.example.Software.project.Entity.DTO;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document
 public class ServiceAgrementDTO {
+
+    private String cusName;
+
+    private String location;
+
+    private String item;
+
+    private String agrType;
 }

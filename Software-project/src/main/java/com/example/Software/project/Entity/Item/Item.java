@@ -1,4 +1,4 @@
-package com.example.Software.project.Entity.ServiceAgreement;
+package com.example.Software.project.Entity.Item;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -8,25 +8,26 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "services")
-public class ServiceAgreement {
+@AllArgsConstructor
+@Document
+public class Item {
     @Id
     private String id;
 
     @NotBlank
-    private String cusName;
+    private String name;
 
     @NotBlank
-    private String location;
+    private String indoorMod;
 
     @NotBlank
-    private String item;
+    private String outdoorMod;
 
     @NotBlank
-    private String agrType;
+    private String manufacturer;
 
     @NotBlank
-    private String periMonth;
+    private String capacity;
+
 }
