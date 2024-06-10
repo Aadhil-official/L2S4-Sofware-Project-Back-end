@@ -1,9 +1,12 @@
 package com.example.Software.project.Controller.Complain;
 
 import com.example.Software.project.Entity.Complain.Complain;
+import com.example.Software.project.Entity.DTO.UserComplainDTO;
+import com.example.Software.project.Entity.Login.AppUser;
 import com.example.Software.project.Repo.Complain.ComplainRepo;
 //import jakarta.servlet.http.HttpServletRequest;
 //import org.springframework.beans.factory.annotation.Autowired;
+import com.example.Software.project.Repo.Login.AppUserRepo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,7 @@ import java.io.IOException;
 //import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -24,8 +28,11 @@ public class ComplainCont {
     private final List<SseEmitter> sseEmitters = new CopyOnWriteArrayList<>();
     private final ComplainRepo complainRepo;
 
-    public ComplainCont(ComplainRepo complainRepo) {
+    private final AppUserRepo appUserRepo;
+
+    public ComplainCont(ComplainRepo complainRepo, AppUserRepo appUserRepo) {
         this.complainRepo = complainRepo;
+        this.appUserRepo = appUserRepo;
     }
 
     @PostMapping("/complaints")
@@ -43,11 +50,21 @@ public class ComplainCont {
 
     @PostMapping("/findcomplaint")
     public ResponseEntity<?> findAllComplaint() {
-        try {
-            List<Complain> complains = complainRepo.findAll();
-            return ResponseEntity.ok().body(complains);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("This is error: " + e.getMessage());
+        {
+            try {
+                List<AppUser> appUsers = appUserRepo.findAll();
+                List<Complain> complains = complainRepo.findAll();
+
+                List<UserComplainDTO> userComplainDTOS = appUsers.stream()
+                        .flatMap(user -> complains.stream()
+                                .filter(complain -> complain.getEmail().equals(user.getEmail()))
+                                .map(complain -> new UserComplainDTO(user, complain))
+                        ).collect(Collectors.toList());
+
+                return ResponseEntity.ok().body(userComplainDTOS);
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("This is error: " + e.getMessage());
+            }
         }
     }
 

@@ -1,4 +1,5 @@
-package com.example.Software.project.Entity.Complain;
+package com.example.Software.project.Entity.Item;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,26 +7,27 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
-//The complaints request entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "complaints")
-public class Complain {
+@AllArgsConstructor
+@Document
+public class Item {
     @Id
-    @NotBlank
-    private String complainId;
+    private String id;
 
     @NotBlank
-    private String subject;
+    private String name;
 
     @NotBlank
-    private String email;
+    private String indoorMod;
 
     @NotBlank
-    private String object;
+    private String outdoorMod;
 
     @NotBlank
-    private String complaindate;
+    private String manufacturer;
+
+    @NotBlank
+    private String capacity;
+
 }
