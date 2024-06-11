@@ -1,5 +1,6 @@
 package com.example.Software.project.Entity.DTO;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,8 +11,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Document
 public class ItemDTO {
+    private String id;
+
+    @NotBlank
     private String name;
-    private String capacity;
+
+    @NotBlank
     private String indoorMod;
+
+    @NotBlank
     private String outdoorMod;
+
+    @NotBlank
+    private String manufacturer;
+
+    @NotBlank
+    private String capacity;
 }

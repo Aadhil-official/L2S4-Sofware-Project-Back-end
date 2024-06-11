@@ -2,6 +2,7 @@ package com.example.Software.project.Controller.Auth;
 
 import com.example.Software.project.Controller.Auth.Response.UserInfoResponse;
 //import jakarta.validation.constraints.Email;
+import com.example.Software.project.Entity.DTO.AppUserDTO;
 import com.example.Software.project.Entity.Forgetpass.ForEmail;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.mail.SimpleMailMessage;
@@ -32,11 +34,7 @@ import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -269,13 +267,62 @@ public class AuthonticationController {
         return otp.toString();
     }
 
-//    private String generateNumberPass() {
-//        Random random = new Random();
-//        int otpLength = 8;
-//        StringBuilder otp = new StringBuilder();
-//        for (int i = 0; i < otpLength; i++) {
-//            otp.append(random.nextInt(10));
-//        }
-//        return otp.toString();
-//    }
+    @PostMapping("/findappuser")
+    public ResponseEntity<?> findUserById(@RequestParam String id) {
+        try {
+            Optional<AppUser> optionalUser = userRepository.findById(id);
+            if (optionalUser.isPresent()) {
+                AppUser user = optionalUser.get();
+                AppUserDTO userDto = new AppUserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getTel(), user.getAddress(), user.getUsergroup(), user.getRoles());
+//                System.out.println(userDto);
+                return ResponseEntity.ok().body(userDto);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("User with ID " + id + " not found"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse("Error fetching user: " + e.getMessage()));
+        }
+    }
+
+
+    @PutMapping("/updateUser")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody AppUserDTO userDto) {
+        try {
+            Optional<AppUser> optionalUser = userRepository.findById(userDto.getId());
+            if (optionalUser.isPresent()) {
+                AppUser user = optionalUser.get();
+                System.out.println(user);
+                user.setUsername(userDto.getUsername());
+                user.setAddress(userDto.getAddress());
+                user.setTel(userDto.getTel());
+                user.setUsergroup(userDto.getUsergroup());
+                user.setEmail(userDto.getEmail());
+
+//                Set<Role> roles = userDto.getRoles().stream()
+//                        .map(roleName -> roleRepository.findByName(roleName.getName()))
+//                        .filter(Optional::isPresent)
+//                        .map(Optional::get)
+//                        .collect(Collectors.toSet());
+
+//                if(userDto.getRoles()==="admin"){
+//                    user.setRoles(roles);
+//                }else {
+                    user.setRoles(user.getRoles());
+//                }
+//                System.out.println(user.getRoles());
+//                List<Role> roles = userDto.getRoles().stream()
+//                        .map(roleName -> roleRepository.findByName(LogRole.valueOf(roleName.toUpperCase())))
+//                        .collect(Collectors.toList());
+//                user.setRoles(roles);
+                // Assuming roles should not be updated here, else handle role updates similarly
+                userRepository.save(user);
+                return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with ID " + userDto.getId() + " not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user: " + e.getMessage());
+        }
+    }
+
 }
