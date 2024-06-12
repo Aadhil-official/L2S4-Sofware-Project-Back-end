@@ -18,6 +18,7 @@ import java.io.IOException;
 //import java.text.SimpleDateFormat;
 //import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -79,6 +80,26 @@ public class ComplainCont {
 //        emitter.onTimeout(() -> sseEmitters.remove(emitter));
         return emitter;
     }
+
+//    @DeleteMapping("/deletComplain")
+//    public ResponseEntity<String> deletComplain(@RequestParam String id){
+//        try {
+//            complainRepo.deleteById(id);
+//            return ResponseEntity.ok("Successfully deleted");
+//        }catch (Exception e){
+//            return ResponseEntity.badRequest().body("Error on finding complain");
+//        }
+//    }
+
+//    @DeleteMapping("/deletComplains")
+//    public ResponseEntity<String> deletComplains(){
+//        try {
+//            complainRepo.deleteAll();
+//            return ResponseEntity.ok("Successfully deleted");
+//        } catch (Exception e){
+//          return ResponseEntity.badRequest().body("Error when delete all");
+//        }
+//    }
 
 //    @PostMapping("/notification")
     public void notifyClients(@RequestParam String message) {

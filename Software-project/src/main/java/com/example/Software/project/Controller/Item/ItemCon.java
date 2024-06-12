@@ -1,8 +1,10 @@
 package com.example.Software.project.Controller.Item;
 
 import com.example.Software.project.Controller.Auth.MessageResponse;
+//import com.example.Software.project.Entity.DTO.AppUserDTO;
 import com.example.Software.project.Entity.DTO.ItemDTO;
 import com.example.Software.project.Entity.Item.Item;
+//import com.example.Software.project.Entity.Login.AppUser;
 import com.example.Software.project.Repo.Item.ItemRepo;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -27,9 +29,11 @@ public class ItemCon {
     @PostMapping("/addItem")
     public ResponseEntity<String> addItems(@RequestBody Item item){
         try {
-            itemRepo.save(item);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Item Added successfully");
-        }catch (Exception e){
+//            if(itemRepo.existsById()) {
+                itemRepo.save(item);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Item Added successfully");
+//            }
+            }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: "+e.toString());
         }
     }
@@ -90,4 +94,20 @@ public class ItemCon {
         }
     }
 
+
+    @PostMapping("/finditem")
+    public ResponseEntity<?> finditem(@RequestParam String id) {
+        try {
+            Optional<Item> optionalItem = itemRepo.findById(id);
+            if (optionalItem.isPresent()) {
+                Item item = optionalItem.get();
+                ItemDTO itemDTO = new ItemDTO(item.getId(), item.getName(), item.getIndoorMod(), item.getOutdoorMod(), item.getManufacturer(), item.getCapacity());
+              return ResponseEntity.ok().body(itemDTO);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Item with ID " + id + " not found"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse("Error fetching item: " + e.getMessage()));
+        }
+    }
 }
