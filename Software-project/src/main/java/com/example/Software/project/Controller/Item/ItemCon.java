@@ -44,6 +44,16 @@ public class ItemCon {
         }
     }
 
+    @GetMapping("/getItem")
+    public ResponseEntity<?> getItem(@RequestParam String id ){
+        try {
+            Optional<Item> items = itemRepo.findById(id);
+            return ResponseEntity.ok().body(items);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: "+e.getMessage());
+        }
+    }
+
     @PutMapping("/updateItem")
     public ResponseEntity<?> updateItem(@Valid @RequestBody ItemDTO itemDTO) {
         try {
