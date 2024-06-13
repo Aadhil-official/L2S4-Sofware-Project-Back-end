@@ -1,7 +1,10 @@
 package com.example.Software.project.Entity.DTO;
 
 import com.example.Software.project.Entity.Login.Role;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,11 +19,29 @@ import java.util.Set;
 @NoArgsConstructor
 @Document
 public class AppUserDTO {
+    private String id;
+
+    @NotBlank
+    @Size(max = 20)
     private String username;
+
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    private String email;
+
+    @NotBlank
+    @Size(max = 12)
+    @Pattern(regexp = "^\\+?\\d{10,12}$", message = "Invalid telephone number")
+    private String tel;
+
+    @NotBlank
+    @Size(max = 150)
     private String address;
 
-    @Pattern(regexp = "^\\+\\d{11}$", message = "Invalid telephone number")
-    private String tel;
+    @NotBlank
+    @Size(max = 150)
+    private String usergroup;
 
     @DBRef
     private Set<Role> roles = new HashSet<>();

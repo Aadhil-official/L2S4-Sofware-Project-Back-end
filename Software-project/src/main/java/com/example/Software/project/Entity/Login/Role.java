@@ -21,4 +21,12 @@ public class Role {
     public Role(LogRole name) {
         this.name = name;
     }
+
+//    public String toUpperCase() {
+//
+//    }
+
+//    public Role(String name) {
+//        this.name = LogRole.valueOf(name.toUpperCase());
+//    }
 }

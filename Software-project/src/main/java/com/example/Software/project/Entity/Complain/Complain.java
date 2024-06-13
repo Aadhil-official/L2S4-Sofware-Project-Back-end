@@ -1,4 +1,5 @@
 package com.example.Software.project.Entity.Complain;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,13 +15,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "complaints")
 public class Complain {
     @Id
-    @NotBlank
     private String complainId;
 
     @NotBlank
     private String subject;
 
     @NotBlank
+    @Email
     private String email;
 
     @NotBlank
