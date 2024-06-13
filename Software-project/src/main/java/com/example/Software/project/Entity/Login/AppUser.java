@@ -34,7 +34,7 @@ public class AppUser {
     private String email;
 
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 12)
     @Pattern(regexp = "^\\+?\\d{10,12}$", message = "Invalid telephone number")
     private String tel;
 

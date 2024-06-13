@@ -42,6 +42,8 @@ import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
 
+import static java.util.stream.Collectors.*;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 //@RequiredArgsConstructor
@@ -91,7 +93,7 @@ public class AuthonticationController {
 
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
+                .collect(toList());
 
         //GrantedAuthority::getAuthority
 
@@ -289,8 +291,44 @@ public class AuthonticationController {
     public ResponseEntity<?> updateUser(@Valid @RequestBody AppUserDTO userDto) {
         try {
             Optional<AppUser> optionalUser = userRepository.findById(userDto.getId());
+            String role="";
+            String username="";
+            String address="";
+            String tel="";
+            String userGroup="";
+            String email="";
             if (optionalUser.isPresent()) {
                 AppUser user = optionalUser.get();
+
+                Set<String> userDtoRoleNames = new HashSet<>();
+                for (Role role1 : userDto.getRoles()) {
+                    LogRole name = role1.getName();
+                    userDtoRoleNames.add(String.valueOf(name));
+                }
+
+                if (!Objects.equals(userDto.getRoles().toString(), user.getRoles().toString())) {
+                    String newRoles = String.join(", ", userDtoRoleNames);
+                    role = "Your role is changed with: "+newRoles+"\n";
+
+                } if (!Objects.equals(userDto.getUsergroup(), user.getUsergroup())){
+                    userGroup= "Your group is changed with: "+ userDto.getUsergroup()+"\n";
+                } if (!Objects.equals(userDto.getAddress(), user.getAddress())){
+                    address="Your address is changed with: "+userDto.getAddress()+"\n";
+                } if (!Objects.equals(userDto.getTel(), user.getTel())) {
+                    tel="Your contact number is changed with: "+userDto.getTel()+"\n";
+                } if (!Objects.equals(userDto.getUsername(), user.getUsername())) {
+                    username="Your username is changed with: "+userDto.getUsername()+"\n";
+                } if (!Objects.equals(userDto.getEmail(), user.getEmail())) {
+                    email="Your email is changed with: "+userDto.getEmail()+"\n";
+                }
+                String subject="Your details are updated";
+                String object=username+address+userGroup+tel+role+email;
+                String emailSend;
+                emailSend=userDto.getEmail();
+
+                if (!username.isEmpty()||!address.isEmpty()||!userGroup.isEmpty()||!tel.isEmpty()||!role.isEmpty()||!email.isEmpty()){
+                    sendEmail(emailSend,"",subject,object);
+                }
                 System.out.println(user);
                 user.setUsername(userDto.getUsername());
                 user.setAddress(userDto.getAddress());
