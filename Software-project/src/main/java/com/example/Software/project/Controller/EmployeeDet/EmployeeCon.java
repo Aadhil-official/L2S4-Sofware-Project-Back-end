@@ -34,7 +34,7 @@ public class EmployeeCon {
         try {
             List<AppUser> appUsers = appUserRepo.findAll();
             List<AppUserDTO> appUserDtos = appUsers.stream()
-                    .map(user -> new AppUserDTO(user.getId(),user.getUsername(), user.getEmail(), user.getTel(),user.getAddress(),user.getUsergroup(), user.getRoles()))
+                    .map(user -> new AppUserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getTel(), user.getAddress(), user.getUsergroup(), user.getRoles()))
                     .collect(Collectors.toList());
 //            System.out.println(appUserDtos);
             return ResponseEntity.ok().body(appUserDtos);

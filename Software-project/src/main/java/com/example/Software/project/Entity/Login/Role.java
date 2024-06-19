@@ -17,7 +17,7 @@ public class Role {
     private String id;
     private LogRole name;
 
-//    private List<String> roles;
+    //    private List<String> roles;
     public Role(LogRole name) {
         this.name = name;
     }

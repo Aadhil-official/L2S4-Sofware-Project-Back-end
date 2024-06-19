@@ -1,38 +1,41 @@
 package com.example.Software.project.Entity.DTO;
 
-import jakarta.validation.constraints.Email;
+import com.example.Software.project.Entity.Unit.Unit;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Optional;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Document
-public class JobDTO {
+public class UnitDTO {
+
     private String id;
 
     @NotBlank
-    @Email
-    private String email;
+    private String indoorSerial;
 
     @NotBlank
-    private String itemIssue;
+    private String outdoorSerial;
 
     @NotBlank
-    private String customerDetails;
+    private String modelName;
 
     @NotBlank
-    private String employeeDetails;
+    private String commissionedDate;
 
     @NotBlank
-    private String location;
+    private String owner;
 
     @NotBlank
-    @Size(max = 10)
-    private String item;
+    private String warrantyPeriod;
+
+    @NotBlank
+    private String unitPrice;
+
 }

@@ -54,12 +54,12 @@ public class AppUser {
     private Set<Role> roles = new HashSet<>();
 
 
-    public AppUser(String username, String email, String address, String usergroup, String tel ,String password) {
+    public AppUser(String username, String email, String address, String usergroup, String tel, String password) {
         this.username = username;
         this.email = email;
-        this.address=address;
-        this.usergroup=usergroup;
-        this.tel=tel;
+        this.address = address;
+        this.usergroup = usergroup;
+        this.tel = tel;
         this.password = password;
     }
 }

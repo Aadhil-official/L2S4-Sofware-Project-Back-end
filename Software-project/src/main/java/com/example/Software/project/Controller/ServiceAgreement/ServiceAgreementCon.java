@@ -20,22 +20,22 @@ public class ServiceAgreementCon {
     }
 
     @PostMapping("/addService")
-    public ResponseEntity<String> addService(@RequestBody ServiceAgreement serviceAgreement){
+    public ResponseEntity<String> addService(@RequestBody ServiceAgreement serviceAgreement) {
         try {
             serviceAgreementRepo.save(serviceAgreement);
             return ResponseEntity.status(HttpStatus.CREATED).body("ServiceAdded successfully");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: "+e.toString());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.toString());
         }
     }
 
     @PostMapping("/getAllServices")
-    public ResponseEntity<?> findServices(){
+    public ResponseEntity<?> findServices() {
         try {
             List<ServiceAgreement> serviceAgreements = serviceAgreementRepo.findAll();
             return ResponseEntity.ok().body(serviceAgreements);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: "+e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 }
