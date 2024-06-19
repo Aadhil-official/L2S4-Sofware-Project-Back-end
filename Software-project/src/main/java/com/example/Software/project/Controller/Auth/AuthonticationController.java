@@ -169,10 +169,14 @@ public class AuthonticationController {
         // Save the user to the database
         userRepository.save(user);
 
-        String subject="Welcome";
-        String object = "pppppppp"+"This is your group"+signUpRequest.getUsergroup()+" You from"+signUpRequest.getAddress();
+        String subject = "Welcome";
+        String object = "pppppppp" + "This is your group" + signUpRequest.getUsergroup() + " You from" + signUpRequest.getAddress();
 
-        sendEmail(signUpRequest.getEmail(),signUpRequest.getPassword(), subject, object);
+        try {
+            sendEmail(signUpRequest.getEmail(), signUpRequest.getPassword(), subject, object);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Email send is failed"));
+        }
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
@@ -217,29 +221,33 @@ public class AuthonticationController {
         return storedOTP != null && storedOTP.equals(otp);
     }
 
-//    private static final Logger logger = LoggerFactory.getLogger(AuthonticationController.class);
+    //    private static final Logger logger = LoggerFactory.getLogger(AuthonticationController.class);
     @PostMapping("/send-otp")
     public ResponseEntity<?> sendOTP(@RequestBody ForEmail forEmail) {
 //    String email1 = requestBody.get("email");
 //        System.out.println(forEmail.getEmail());
-        if (userRepository.existsByEmail(forEmail.getEmail())){
-        String email = forEmail.getEmail();
-        String trimmedEmail = email.trim();
+        if (userRepository.existsByEmail(forEmail.getEmail())) {
+            String email = forEmail.getEmail();
+            String trimmedEmail = email.trim();
 //        logger.debug("Received request at /endpoint");
-        // Generate OTP
-        String otp = generateNumber();
+            // Generate OTP
+            String otp = generateNumber();
 
-        // Save OTP in storage
-        otpStorage.put(trimmedEmail, otp);
+            // Save OTP in storage
+            otpStorage.put(trimmedEmail, otp);
 
-        String subject="";
-        String object = "";
+            String subject = "";
+            String object = "";
 
-        // Send OTP to user via email or SMS (not implemented)
-        sendEmail(trimmedEmail, otp,subject,object);
+            // Send OTP to user via email or SMS (not implemented)
+            try {
+                sendEmail(trimmedEmail, otp, subject, object);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body(new MessageResponse("Email send is failed"));
+            }
 
-        return ResponseEntity.ok(new MessageResponse("OTP sent successfully!"));
-        }else {
+            return ResponseEntity.ok(new MessageResponse("OTP sent successfully!"));
+        } else {
             return ResponseEntity.badRequest().body((new MessageResponse("The use already exist")));
         }
 
@@ -291,12 +299,12 @@ public class AuthonticationController {
     public ResponseEntity<?> updateUser(@Valid @RequestBody AppUserDTO userDto) {
         try {
             Optional<AppUser> optionalUser = userRepository.findById(userDto.getId());
-            String role="";
-            String username="";
-            String address="";
-            String tel="";
-            String userGroup="";
-            String email="";
+            String role = "";
+            String username = "";
+            String address = "";
+            String tel = "";
+            String userGroup = "";
+            String email = "";
             if (optionalUser.isPresent()) {
                 AppUser user = optionalUser.get();
 
@@ -308,26 +316,31 @@ public class AuthonticationController {
 
                 if (!Objects.equals(userDto.getRoles().toString(), user.getRoles().toString())) {
                     String newRoles = String.join(", ", userDtoRoleNames);
-                    role = "Your role is changed with: "+newRoles+"\n";
+                    role = "Your role is changed with: " + newRoles + "\n";
 
-                } if (!Objects.equals(userDto.getUsergroup(), user.getUsergroup())){
-                    userGroup= "Your group is changed with: "+ userDto.getUsergroup()+"\n";
-                } if (!Objects.equals(userDto.getAddress(), user.getAddress())){
-                    address="Your address is changed with: "+userDto.getAddress()+"\n";
-                } if (!Objects.equals(userDto.getTel(), user.getTel())) {
-                    tel="Your contact number is changed with: "+userDto.getTel()+"\n";
-                } if (!Objects.equals(userDto.getUsername(), user.getUsername())) {
-                    username="Your username is changed with: "+userDto.getUsername()+"\n";
-                } if (!Objects.equals(userDto.getEmail(), user.getEmail())) {
-                    email="Your email is changed with: "+userDto.getEmail()+"\n";
                 }
-                String subject="Your details are updated";
-                String object=username+address+userGroup+tel+role+email;
+                if (!Objects.equals(userDto.getUsergroup(), user.getUsergroup())) {
+                    userGroup = "Your group is changed with: " + userDto.getUsergroup() + "\n";
+                }
+                if (!Objects.equals(userDto.getAddress(), user.getAddress())) {
+                    address = "Your address is changed with: " + userDto.getAddress() + "\n";
+                }
+                if (!Objects.equals(userDto.getTel(), user.getTel())) {
+                    tel = "Your contact number is changed with: " + userDto.getTel() + "\n";
+                }
+                if (!Objects.equals(userDto.getUsername(), user.getUsername())) {
+                    username = "Your username is changed with: " + userDto.getUsername() + "\n";
+                }
+                if (!Objects.equals(userDto.getEmail(), user.getEmail())) {
+                    email = "Your email is changed with: " + userDto.getEmail() + "\n";
+                }
+                String subject = "Your details are updated";
+                String object = username + address + userGroup + tel + role + email;
                 String emailSend;
-                emailSend=userDto.getEmail();
+                emailSend = userDto.getEmail();
 
-                if (!username.isEmpty()||!address.isEmpty()||!userGroup.isEmpty()||!tel.isEmpty()||!role.isEmpty()||!email.isEmpty()){
-                    sendEmail(emailSend,"",subject,object);
+                if (!username.isEmpty() || !address.isEmpty() || !userGroup.isEmpty() || !tel.isEmpty() || !role.isEmpty() || !email.isEmpty()) {
+                    sendEmail(emailSend, "", subject, object);
                 }
                 System.out.println(user);
                 user.setUsername(userDto.getUsername());
@@ -345,7 +358,7 @@ public class AuthonticationController {
 //                if(userDto.getRoles()==="admin"){
 //                    user.setRoles(roles);
 //                }else {
-                    user.setRoles(user.getRoles());
+                user.setRoles(user.getRoles());
 //                }
 //                System.out.println(user.getRoles());
 //                List<Role> roles = userDto.getRoles().stream()

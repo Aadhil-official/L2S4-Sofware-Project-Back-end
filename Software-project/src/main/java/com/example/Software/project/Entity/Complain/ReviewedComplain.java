@@ -8,13 +8,11 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
-//The complaints request entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "complaints")
-public class Complain {
+@Document(collection = "reviewedComplaints")
+public class ReviewedComplain {
     @Id
     private String complainId;
 

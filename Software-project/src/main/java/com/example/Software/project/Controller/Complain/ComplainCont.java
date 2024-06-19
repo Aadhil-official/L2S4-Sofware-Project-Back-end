@@ -1,11 +1,15 @@
 package com.example.Software.project.Controller.Complain;
 
+import com.example.Software.project.Controller.Auth.MessageResponse;
 import com.example.Software.project.Entity.Complain.Complain;
+import com.example.Software.project.Entity.Complain.ReviewedComplain;
 import com.example.Software.project.Entity.DTO.UserComplainDTO;
+import com.example.Software.project.Entity.Item.Item;
 import com.example.Software.project.Entity.Login.AppUser;
 import com.example.Software.project.Repo.Complain.ComplainRepo;
 //import jakarta.servlet.http.HttpServletRequest;
 //import org.springframework.beans.factory.annotation.Autowired;
+import com.example.Software.project.Repo.Complain.ReviewedComplainRepo;
 import com.example.Software.project.Repo.Login.AppUserRepo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +22,7 @@ import java.io.IOException;
 //import java.text.SimpleDateFormat;
 //import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -30,18 +35,21 @@ public class ComplainCont {
 
     private final AppUserRepo appUserRepo;
 
-    public ComplainCont(ComplainRepo complainRepo, AppUserRepo appUserRepo) {
+    private final ReviewedComplainRepo reviewedComplainRepo;
+
+    public ComplainCont(ComplainRepo complainRepo, AppUserRepo appUserRepo, ReviewedComplainRepo reviewedComplainRepo) {
         this.complainRepo = complainRepo;
         this.appUserRepo = appUserRepo;
+        this.reviewedComplainRepo = reviewedComplainRepo;
     }
 
     @PostMapping("/complaints")
     public ResponseEntity<String> submitComplaint(@RequestBody Complain complain) {
-      try {
+        try {
             complainRepo.save(complain);
             String message = "New complaint added"; // Assuming description is a field in the Complain class
-          System.out.println("this is on save or enter complaint");
-          notifyClients(message);
+            System.out.println("this is on save or enter complaint");
+            notifyClients(message);
             return ResponseEntity.status(HttpStatus.CREATED).body("Complaint submitted successfully!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to submit complaint");
@@ -80,7 +88,7 @@ public class ComplainCont {
         return emitter;
     }
 
-//    @PostMapping("/notification")
+    //    @PostMapping("/notification")
     public void notifyClients(@RequestParam String message) {
 //        List<SseEmitter> deadEmitters = new ArrayList<>();
 //        String timestamp = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(new Date());
@@ -96,4 +104,47 @@ public class ComplainCont {
         }
 //        sseEmitters.removeAll(deadEmitters);
     }
+
+
+    @GetMapping("/getComplain")
+    public  ResponseEntity<?> getComplain(@RequestParam String id){
+        Optional<Complain> optionalComplain = complainRepo.findById(id);
+
+        try {
+            if(optionalComplain.isPresent()){
+                return ResponseEntity.ok().body(optionalComplain);
+            }else {
+                return ResponseEntity.badRequest().body(new MessageResponse("Complain not "));
+            }
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(new MessageResponse("Error"+e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/dltComplain")
+    public ResponseEntity<MessageResponse> dltComplain(@RequestParam String id) {
+        Optional<Complain> optionalComplain = complainRepo.findById(id);
+        try {
+            if (optionalComplain.isPresent()) {
+                ReviewedComplain reviewedComplain = convertToReviewedComplain(optionalComplain.get());
+                reviewedComplainRepo.save(reviewedComplain);
+                complainRepo.delete(optionalComplain.get());
+                return ResponseEntity.ok(new MessageResponse("Item deleted Successfully"));
+            } else {
+                return ResponseEntity.badRequest().body(new MessageResponse("Item not found"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error deleting item: " + e.getMessage()));
+        }
+    }
+
+    private ReviewedComplain convertToReviewedComplain(Complain complain) {
+        ReviewedComplain reviewedComplain = new ReviewedComplain();
+        reviewedComplain.setSubject(complain.getSubject());
+        reviewedComplain.setEmail(complain.getEmail());
+        reviewedComplain.setObject(complain.getObject());
+        reviewedComplain.setComplaindate(complain.getComplaindate());
+        return reviewedComplain;
+    }
+
 }

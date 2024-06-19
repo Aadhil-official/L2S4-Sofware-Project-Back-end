@@ -34,6 +34,6 @@ public class Job {
     private String location;
 
     @NotBlank
-    @Size(max=10)
+    @Size(max = 10)
     private String item;
 }

@@ -1,6 +1,7 @@
 package com.example.Software.project.Controller;
 
 //import org.springframework.stereotype.Component;
+
 import com.example.Software.project.Controller.Auth.MessageResponse;
 import com.example.Software.project.Entity.DTO.ItemDTO;
 import com.example.Software.project.Entity.DTO.JobDTO;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-@CrossOrigin(origins = "*",maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class JobsCon {
@@ -53,12 +54,12 @@ public class JobsCon {
 
 
     @GetMapping("/getJob")
-    public ResponseEntity<?> getJob(@RequestParam String id ){
+    public ResponseEntity<?> getJob(@RequestParam String id) {
         try {
             Optional<Job> job = jobsRepo.findById(id);
             return ResponseEntity.ok().body(job);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: "+e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 

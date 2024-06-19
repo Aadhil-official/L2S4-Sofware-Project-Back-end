@@ -21,7 +21,7 @@ public class UpdatePasswordRequest {
     String email;
 
     @NotBlank
-    @Size(min = 6,max = 6)
+    @Size(min = 6, max = 6)
     String otp;
 
     @NotBlank

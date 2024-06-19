@@ -25,32 +25,32 @@ public class ItemCon {
 
 
     @PostMapping("/addItem")
-    public ResponseEntity<String> addItems(@RequestBody Item item){
+    public ResponseEntity<String> addItems(@RequestBody Item item) {
         try {
             itemRepo.save(item);
             return ResponseEntity.status(HttpStatus.CREATED).body("Item Added successfully");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: "+e.toString());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.toString());
         }
     }
 
     @GetMapping("/getAllItem")
-    public ResponseEntity<?> getAllItem(){
+    public ResponseEntity<?> getAllItem() {
         try {
             List<Item> items = itemRepo.findAll();
             return ResponseEntity.ok().body(items);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: "+e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
     @GetMapping("/getItem")
-    public ResponseEntity<?> getItem(@RequestParam String id ){
+    public ResponseEntity<?> getItem(@RequestParam String id) {
         try {
             Optional<Item> items = itemRepo.findById(id);
             return ResponseEntity.ok().body(items);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: "+e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
@@ -92,7 +92,7 @@ public class ItemCon {
 
     @DeleteMapping("/clearAllItems")
     public ResponseEntity<MessageResponse> clearAllItems() {
-      try {
+        try {
             itemRepo.deleteAll();
             return ResponseEntity.ok(new MessageResponse("Successfully delete all items"));
         } catch (Exception e) {

@@ -1,4 +1,5 @@
 package com.example.Software.project.Entity.Message;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +14,8 @@ public class LogController {
     Logger logger
             = LoggerFactory.getLogger(LogController.class);
 
-    @RequestMapping("/log") public String log()
-    {
+    @RequestMapping("/log")
+    public String log() {
         // Logging various log level messages
         logger.trace("Log level: TRACE");
         logger.info("Log level: INFO");
