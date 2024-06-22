@@ -7,5 +7,8 @@ import java.util.Optional;
 
 public interface ItemRepo extends MongoRepository<Item, String> {
 
-//    Optional<Item> findById(String id);
+    Boolean existsByOutdoorMod(String outdoorMod);
+
+    Boolean existsByIndoorMod(String indoorMod);
+
 }

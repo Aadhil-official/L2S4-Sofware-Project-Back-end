@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -62,11 +63,15 @@ public class VehicleCon {
             Optional<Vehicle> optionalVehicle = vehicleRepo.findById(vehicleDTO.getId());
             if (optionalVehicle.isPresent()) {
                 Vehicle vehicle = optionalVehicle.get();
-                vehicle.setVehicleType(vehicleDTO.getVehicleType());
-                vehicle.setVehicleNumber(vehicleDTO.getVehicleNumber());
-                vehicle.setNoOfPassengers(vehicleDTO.getNoOfPassengers());
-                vehicleRepo.save(vehicle);
-                return ResponseEntity.ok(new MessageResponse("Vehicle updated successfully!"));
+                if(!vehicleRepo.existsByVehicleNumber(vehicleDTO.getVehicleNumber())|| Objects.equals(vehicleDTO.getVehicleNumber(), vehicle.getVehicleNumber())) {
+                    vehicle.setVehicleType(vehicleDTO.getVehicleType());
+                    vehicle.setVehicleNumber(vehicleDTO.getVehicleNumber());
+                    vehicle.setNoOfPassengers(vehicleDTO.getNoOfPassengers());
+                    vehicleRepo.save(vehicle);
+                    return ResponseEntity.ok(new MessageResponse("Vehicle updated successfully!"));
+                } else {
+                    return ResponseEntity.badRequest().body("Vehicle already exists");
+                }
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vehicle with ID " + vehicleDTO.getId() + " not found");
             }

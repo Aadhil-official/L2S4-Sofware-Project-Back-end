@@ -2,6 +2,8 @@ package com.example.Software.project.Entity.Customer;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,8 @@ public class Customer {
     private String address;
 
     @NotBlank
+    @Size(max = 12,min = 10)
+    @Pattern(regexp = "^\\+?\\d{10,12}$", message = "Invalid telephone number")
     private String contactNumber;
 
     @NotBlank

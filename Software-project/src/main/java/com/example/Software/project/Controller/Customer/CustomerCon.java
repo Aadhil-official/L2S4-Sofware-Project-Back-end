@@ -27,9 +27,13 @@ public class CustomerCon {
     @PostMapping("/addCustomer")
     public ResponseEntity<String> addCustomer(@RequestBody Customer customer) {
         try {
-            customerRepo.save(customer);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Customer Added successfully");
-        } catch (Exception e) {
+            if (!customerRepo.existsByContactNumber(customer.getContactNumber())) {
+                customerRepo.save(customer);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Customer Added successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Contact number is already exists");
+            }
+            } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.toString());
         }
     }

@@ -27,10 +27,15 @@ public class ItemCon {
     @PostMapping("/addItem")
     public ResponseEntity<String> addItems(@RequestBody Item item) {
         try {
+            if (itemRepo.existsByOutdoorMod(item.getOutdoorMod())){
+                return ResponseEntity.badRequest().body("Item already exists");
+            } if (itemRepo.existsByIndoorMod(item.getIndoorMod())){
+                return ResponseEntity.badRequest().body("Item already exists");
+            }
             itemRepo.save(item);
             return ResponseEntity.status(HttpStatus.CREATED).body("Item Added successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.toString());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e);
         }
     }
 
