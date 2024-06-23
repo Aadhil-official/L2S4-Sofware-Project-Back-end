@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -26,10 +27,14 @@ public class UserGroupCon {
     @PostMapping("/addUserGroup")
     public ResponseEntity<String> addUserGroup(@RequestBody UserGroup userGroup) {
         try {
-            userGroupRepo.save(userGroup);
-            return ResponseEntity.status(HttpStatus.CREATED).body("User Group Added successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.toString());
+            if(!userGroupRepo.existsByGroupName(userGroup.getGroupName())){
+                userGroupRepo.save(userGroup);
+                return ResponseEntity.status(HttpStatus.CREATED).body("User Group Added successfully");
+            }else {
+                return ResponseEntity.badRequest().body("User group is already exists");
+            }
+            } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e);
         }
     }
 
@@ -42,6 +47,7 @@ public class UserGroupCon {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
+
 
     @GetMapping("/getUserGroup")
     public ResponseEntity<?> getUserGroup(@RequestParam String id) {
@@ -58,14 +64,18 @@ public class UserGroupCon {
         try {
             Optional<UserGroup> optionalUserGroup = userGroupRepo.findById(userGroupDTO.getId());
             if (optionalUserGroup.isPresent()) {
-                UserGroup userGroup = optionalUserGroup.get();
-                userGroup.setGroupName(userGroupDTO.getGroupName());
-                userGroup.setGroupDescription(userGroupDTO.getGroupDescription());
-                userGroup.setRelevantPrivileges(userGroupDTO.getRelevantPrivileges());
-                userGroup.setAllocatedJobs(userGroupDTO.getAllocatedJobs());
-                userGroupRepo.save(userGroup);
-                return ResponseEntity.ok(new MessageResponse("User Group updated successfully!"));
-            } else {
+                    UserGroup userGroup = optionalUserGroup.get();
+                if(!userGroupRepo.existsByGroupName(userGroupDTO.getGroupName()) || Objects.equals(userGroup.getGroupName(), userGroupDTO.getGroupName())) {
+                    userGroup.setGroupName(userGroupDTO.getGroupName());
+                    userGroup.setGroupDescription(userGroupDTO.getGroupDescription());
+                    userGroup.setRelevantPrivileges(userGroupDTO.getRelevantPrivileges());
+                    userGroup.setAllocatedJobs(userGroupDTO.getAllocatedJobs());
+                    userGroupRepo.save(userGroup);
+                    return ResponseEntity.ok(new MessageResponse("User Group updated successfully!"));
+                }else {
+                    return ResponseEntity.badRequest().body("User group is already exists");
+                }
+                } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Group with ID " + userGroupDTO.getId() + " not found");
             }
         } catch (Exception e) {

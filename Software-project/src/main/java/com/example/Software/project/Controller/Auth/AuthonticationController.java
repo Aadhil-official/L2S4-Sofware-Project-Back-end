@@ -342,12 +342,14 @@ public class AuthonticationController {
                 if (!username.isEmpty() || !address.isEmpty() || !userGroup.isEmpty() || !tel.isEmpty() || !role.isEmpty() || !email.isEmpty()) {
                     sendEmail(emailSend, "", subject, object);
                 }
-                System.out.println(user);
-                user.setUsername(userDto.getUsername());
-                user.setAddress(userDto.getAddress());
-                user.setTel(userDto.getTel());
-                user.setUsergroup(userDto.getUsergroup());
-                user.setEmail(userDto.getEmail());
+                if ((((!userRepository.existsByUsername(userDto.getUsername())) || username.isEmpty()) && ((!userRepository.existsByEmail(userDto.getEmail())) || email.isEmpty())))
+                {
+//                System.out.println(user);
+                    user.setUsername(userDto.getUsername());
+                    user.setAddress(userDto.getAddress());
+                    user.setTel(userDto.getTel());
+                    user.setUsergroup(userDto.getUsergroup());
+                    user.setEmail(userDto.getEmail());
 
 //                Set<Role> roles = userDto.getRoles().stream()
 //                        .map(roleName -> roleRepository.findByName(roleName.getName()))
@@ -358,17 +360,20 @@ public class AuthonticationController {
 //                if(userDto.getRoles()==="admin"){
 //                    user.setRoles(roles);
 //                }else {
-                user.setRoles(user.getRoles());
+                    user.setRoles(user.getRoles());
 //                }
 //                System.out.println(user.getRoles());
 //                List<Role> roles = userDto.getRoles().stream()
 //                        .map(roleName -> roleRepository.findByName(LogRole.valueOf(roleName.toUpperCase())))
 //                        .collect(Collectors.toList());
 //                user.setRoles(roles);
-                // Assuming roles should not be updated here, else handle role updates similarly
-                userRepository.save(user);
-                return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
-            } else {
+                    // Assuming roles should not be updated here, else handle role updates similarly
+                    userRepository.save(user);
+                    return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
+                }else {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(" Username or email is already exists ");
+                }
+                } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with ID " + userDto.getId() + " not found");
             }
         } catch (Exception e) {
