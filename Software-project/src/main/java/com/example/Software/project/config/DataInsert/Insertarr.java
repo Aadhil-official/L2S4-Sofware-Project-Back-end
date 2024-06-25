@@ -3,8 +3,10 @@ package com.example.Software.project.config.DataInsert;
 import com.example.Software.project.Entity.Login.AppUser;
 import com.example.Software.project.Entity.Login.LogRole;
 import com.example.Software.project.Entity.Login.Role;
+import com.example.Software.project.Entity.UserGroup.UserGroup;
 import com.example.Software.project.Repo.Login.AppUserRepo;
 import com.example.Software.project.Repo.Login.RoleRepo;
+import com.example.Software.project.Repo.UserGroup.UserGroupRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -22,12 +25,14 @@ import java.util.Set;
 @Configuration
 public class Insertarr {
 
+    private final UserGroupRepo userGroupRepo;
     private final PasswordEncoder encoder;
     private final JavaMailSender emailSender;
     private final AppUserRepo userRepository;
     private final RoleRepo repository;
 
-    public Insertarr(PasswordEncoder encoder, JavaMailSender emailSender, AppUserRepo userRepository, RoleRepo repository) {
+    public Insertarr(UserGroupRepo userGroupRepo, PasswordEncoder encoder, JavaMailSender emailSender, AppUserRepo userRepository, RoleRepo repository) {
+        this.userGroupRepo = userGroupRepo;
         this.encoder = encoder;
         this.emailSender = emailSender;
         this.userRepository = userRepository;
@@ -39,7 +44,7 @@ public class Insertarr {
         return args -> {
             // Check if roles exist, if not, create them
             createRolesIfNotExist();
-
+            createAdminGroupIfNotExist();
             // Check if admin user exists
             if (!userRepository.existsByEmail("aadhil8336@gmail.com") && !userRepository.existsByUsername("Admin")) {
                 // Create a new admin user
@@ -48,7 +53,7 @@ public class Insertarr {
                 adminUser.setUsername("Admin");
                 adminUser.setEmail("aadhil8336@gmail.com");
                 adminUser.setPassword(encoder.encode(pass));
-                adminUser.setUsergroup("anadmin");
+                adminUser.setUsergroup("AdminGroup");
                 adminUser.setAddress("ArctictPvt(Ltd)");
                 adminUser.setTel("+94750213273");
                 // Assign role to admin user
@@ -85,6 +90,19 @@ public class Insertarr {
             repository.save(new Role(LogRole.ADMIN));
         }
     }
+
+
+    private void createAdminGroupIfNotExist() {
+        if (!userGroupRepo.existsByGroupName("AdminGroup")) {
+            UserGroup userGroup = new UserGroup();
+            userGroup.setGroupName("AdminGroup");
+            userGroup.setGroupDescription("Have access on all data sets");
+            userGroup.setAllocatedJobs("Admin Job");
+            userGroup.setRelevantPrivileges(Collections.singletonList("All access"));
+            userGroupRepo.save(userGroup);
+        }
+    }
+
 
     private void sendEmail(String email, String subject, String message) {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
