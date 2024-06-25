@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,8 +21,10 @@ public class UserGroupDTO {
     @NotBlank
     private String groupDescription;
 
+
     @NotBlank
-    private String relevantPrivileges;
+    private List<@NotBlank String> relevantPrivileges;
+
 
     @NotBlank
     private String allocatedJobs;

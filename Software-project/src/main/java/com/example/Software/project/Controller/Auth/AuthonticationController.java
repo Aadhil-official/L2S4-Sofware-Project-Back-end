@@ -1,5 +1,6 @@
 package com.example.Software.project.Controller.Auth;
 
+import com.example.Software.project.Controller.Auth.Response.SignInResponse;
 import com.example.Software.project.Controller.Auth.Response.UserInfoResponse;
 //import jakarta.validation.constraints.Email;
 import com.example.Software.project.Entity.DTO.AppUserDTO;
@@ -10,14 +11,15 @@ import com.example.Software.project.Entity.Forgetpass.UpdatePasswordRequest;
 import com.example.Software.project.Entity.Login.AppUser;
 import com.example.Software.project.Entity.Login.LogRole;
 import com.example.Software.project.Entity.Login.Role;
+import com.example.Software.project.Entity.UserGroup.UserGroup;
 import com.example.Software.project.Repo.Login.AppUserRepo;
 import com.example.Software.project.Repo.Login.RoleRepo;
+import com.example.Software.project.Repo.UserGroup.UserGroupRepo;
 import com.example.Software.project.config.JwtUtils;
 import com.example.Software.project.config.UserDetailsImpl;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -37,7 +39,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 import jakarta.validation.Valid;
@@ -63,16 +64,18 @@ public class AuthonticationController {
 
     private final Map<String, String> otpStorage = new HashMap<>();
 
+    private final UserGroupRepo userGroupRepo;
 
     private final JavaMailSender emailSender;
 
     @Autowired
-    public AuthonticationController(AuthenticationManager authenticationManager, AppUserRepo userRepository, RoleRepo roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils, JavaMailSender emailSender) {
+    public AuthonticationController(AuthenticationManager authenticationManager, AppUserRepo userRepository, RoleRepo roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils, UserGroupRepo userGroupRepo, JavaMailSender emailSender) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.encoder = encoder;
         this.jwtUtils = jwtUtils;
+        this.userGroupRepo = userGroupRepo;
         this.emailSender = emailSender;
     }
 
@@ -96,15 +99,28 @@ public class AuthonticationController {
                 .collect(toList());
 
         //GrantedAuthority::getAuthority
-
+        Optional<UserGroup> userGroupOptional = userGroupRepo.findByGroupName(userDetails.getUsergroup());
+        if (userGroupOptional.isPresent())
+        {
+        UserGroup userGroup = userGroupOptional.get();
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(new UserInfoResponse(userDetails.getId(),
+                .body(new SignInResponse
+                        (new UserInfoResponse(userDetails.getId(),
                         userDetails.getUsername(),
                         userDetails.getEmail(),
                         userDetails.getAddress(),
                         userDetails.getUsergroup(),
                         userDetails.getTel(),
-                        roles));
+                        roles), userGroup));
+        }
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                .body(new UserInfoResponse(userDetails.getId(),
+                                userDetails.getUsername(),
+                                userDetails.getEmail(),
+                                userDetails.getAddress(),
+                                userDetails.getUsergroup(),
+                                userDetails.getTel(),
+                                roles));
     }
 
     @PostMapping("/signup")
@@ -120,7 +136,12 @@ public class AuthonticationController {
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
-
+        if(!userGroupRepo.existsByGroupName(signUpRequest.getUsergroup()))
+        {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User group is not created!"));
+        }
 //        String pass = generateNumberPass();
 
 
