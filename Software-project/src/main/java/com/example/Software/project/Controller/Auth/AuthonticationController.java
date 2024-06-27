@@ -267,7 +267,7 @@ public class AuthonticationController {
 
             String subject = "OTP for reset your password";
             String object = "Your OTP is:"+otp+"\n"+
-                    "You can enter this otp and fill the given fields to reset the password"+"\n"+
+                    "You can enter this otp and fill the given fields to reset the password"+"\n\n"+
                     "Best regards,"+"\nArctict Pvt(Ltd)";
 
             // Send OTP to user via email or SMS (not implemented)
