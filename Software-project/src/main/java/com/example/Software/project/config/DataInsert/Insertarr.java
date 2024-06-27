@@ -17,10 +17,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 @Configuration
 public class Insertarr {
@@ -98,7 +95,13 @@ public class Insertarr {
             userGroup.setGroupName("AdminGroup");
             userGroup.setGroupDescription("Have access on all data sets");
             userGroup.setAllocatedJobs("Admin Job");
-            userGroup.setRelevantPrivileges(Collections.singletonList("All access"));
+
+            List<String> privileges = Arrays.asList("accessEmployee", "accessItem", "accessUnit", "accessVehicle",
+                    "accessCustomer", "accessUserGroup", "accessJob",
+                    "accessServiceAgreement", "accessCalendar", "accessSiteVisit",
+                    "accessJobAllocation","createUser");
+
+            userGroup.setRelevantPrivileges(privileges);
             userGroupRepo.save(userGroup);
         }
     }

@@ -191,10 +191,18 @@ public class AuthonticationController {
         userRepository.save(user);
 
         String subject = "Welcome";
-        String object = "pppppppp" + "This is your group" + signUpRequest.getUsergroup() + " You from" + signUpRequest.getAddress();
+        String object = "Hello "+signUpRequest.getUsername().toUpperCase()+",\n\nYour account has been created successfully.\n\n" +
+                    "Username: " +signUpRequest.getUsername()+ "\n"+
+                    "Password: " + signUpRequest.getPassword() + "\n"+
+                    "Your Group: "+signUpRequest.getUsergroup()+ "\n"+
+                    "Address: "+signUpRequest.getAddress()+ "\n"+
+                    "Contact Number"+signUpRequest.getTel()+
+                    "\n\n" +
+                    "Please change your password after logging in for the first time.\n\n" +
+                    "Regards,\nArctict Pvt(Ltd)";
 
         try {
-            sendEmail(signUpRequest.getEmail(), signUpRequest.getPassword(), subject, object);
+            sendEmail(signUpRequest.getEmail(), subject, object);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse("Email send is failed"));
         }
@@ -257,12 +265,14 @@ public class AuthonticationController {
             // Save OTP in storage
             otpStorage.put(trimmedEmail, otp);
 
-            String subject = "";
-            String object = "";
+            String subject = "OTP for reset your password";
+            String object = "Your OTP is:"+otp+"\n"+
+                    "You can enter this otp and fill the given fields to reset the password"+"\n\n"+
+                    "Best regards,"+"\nArctict Pvt(Ltd)";
 
             // Send OTP to user via email or SMS (not implemented)
             try {
-                sendEmail(trimmedEmail, otp, subject, object);
+                sendEmail(trimmedEmail, subject, object);
             } catch (Exception e) {
                 return ResponseEntity.badRequest().body(new MessageResponse("Email send is failed"));
             }
@@ -275,13 +285,13 @@ public class AuthonticationController {
     }
 
 
-    private void sendEmail(String email, String password, String subject, String object) {
+    private void sendEmail(String email, String subject, String object) {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
         try {
             helper.setTo(email);
             helper.setSubject(subject);
-            helper.setText(object + password);
+            helper.setText(object);
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -361,7 +371,7 @@ public class AuthonticationController {
                 emailSend = userDto.getEmail();
 
                 if (!username.isEmpty() || !address.isEmpty() || !userGroup.isEmpty() || !tel.isEmpty() || !role.isEmpty() || !email.isEmpty()) {
-                    sendEmail(emailSend, "", subject, object);
+                    sendEmail(emailSend, subject, object);
                 }
                 if ((((!userRepository.existsByUsername(userDto.getUsername())) || username.isEmpty()) && ((!userRepository.existsByEmail(userDto.getEmail())) || email.isEmpty())))
                 {
