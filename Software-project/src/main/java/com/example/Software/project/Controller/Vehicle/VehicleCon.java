@@ -30,8 +30,12 @@ public class VehicleCon {
     @PostMapping("/addVehicle")
     public ResponseEntity<String> addVehicle(@RequestBody Vehicle vehicle) {
         try {
-            vehicleRepo.save(vehicle);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Vehicle Added successfully");
+            if(!vehicleRepo.existsByVehicleNumber(vehicle.getVehicleNumber())) {
+                vehicleRepo.save(vehicle);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Vehicle Added successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Vehicle already added");
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.toString());
         }

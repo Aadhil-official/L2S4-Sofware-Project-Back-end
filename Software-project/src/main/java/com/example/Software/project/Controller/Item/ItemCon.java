@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -65,13 +66,17 @@ public class ItemCon {
             Optional<Item> optionalItem = itemRepo.findById(itemDTO.getId());
             if (optionalItem.isPresent()) {
                 Item item = optionalItem.get();
-                item.setIndoorMod(itemDTO.getIndoorMod());
-                item.setOutdoorMod(itemDTO.getOutdoorMod());
-                item.setCapacity(itemDTO.getCapacity());
-                item.setName(itemDTO.getName());
-                item.setManufacturer(itemDTO.getManufacturer());
-                itemRepo.save(item);
-                return ResponseEntity.ok(new MessageResponse("Item updated successfully!"));
+                if ((!itemRepo.existsByIndoorMod(itemDTO.getIndoorMod())|| Objects.equals(itemDTO.getIndoorMod(), item.getIndoorMod())) && (!itemRepo.existsByOutdoorMod(itemDTO.getOutdoorMod()) || Objects.equals(itemDTO.getOutdoorMod(), item.getOutdoorMod()))) {
+                    item.setIndoorMod(itemDTO.getIndoorMod());
+                    item.setOutdoorMod(itemDTO.getOutdoorMod());
+                    item.setCapacity(itemDTO.getCapacity());
+                    item.setName(itemDTO.getName());
+                    item.setManufacturer(itemDTO.getManufacturer());
+                    itemRepo.save(item);
+                    return ResponseEntity.ok(new MessageResponse("Item updated successfully!"));
+                } else {
+                    return ResponseEntity.badRequest().body("Item already exists");
+                }
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with ID " + itemDTO.getId() + " not found");
             }

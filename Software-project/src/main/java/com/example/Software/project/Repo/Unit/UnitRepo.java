@@ -7,5 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface UnitRepo extends MongoRepository<Unit,String> {
-//    @NotNull Optional<Unit> findById(@NotNull String id);
+    Boolean existsByIndoorSerial(String indoorSerial);
+
+    Boolean existsByOutdoorSerial(String outdoorSerial);
 }

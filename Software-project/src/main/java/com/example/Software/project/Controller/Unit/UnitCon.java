@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -29,8 +30,12 @@ public class UnitCon {
     @PostMapping("/addUnit")
     public ResponseEntity<String> addUnit(@RequestBody Unit unit) {
         try {
-            unitRepo.save(unit);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Unit Added successfully");
+            if (!unitRepo.existsByIndoorSerial(unit.getIndoorSerial()) || !unitRepo.existsByOutdoorSerial(unit.getOutdoorSerial())) {
+                unitRepo.save(unit);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Unit Added successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Unit already exists");
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.toString());
         }
@@ -62,15 +67,22 @@ public class UnitCon {
             Optional<Unit> optionalUnit = unitRepo.findById(unitDTO.getId());
             if (optionalUnit.isPresent()) {
                 Unit unit = optionalUnit.get();
-                unit.setIndoorSerial(unitDTO.getIndoorSerial());
-                unit.setOutdoorSerial(unitDTO.getOutdoorSerial());
-                unit.setModelName(unitDTO.getModelName());
-                unit.setCommissionedDate(unitDTO.getCommissionedDate());
-                unit.setOwner(unitDTO.getOwner());
-                unit.setWarrantyPeriod(unitDTO.getWarrantyPeriod());
-                unit.setUnitPrice(unitDTO.getUnitPrice());
-                unitRepo.save(unit);
-                return ResponseEntity.ok(new MessageResponse("Unit updated successfully!"));
+                if (
+                        (!unitRepo.existsByOutdoorSerial(unitDTO.getOutdoorSerial()) || Objects.equals(unitDTO.getOutdoorSerial(), unit.getOutdoorSerial()))
+                        && (!unitRepo.existsByOutdoorSerial(unitDTO.getIndoorSerial()) || Objects.equals(unitDTO.getIndoorSerial(), unit.getIndoorSerial()))
+                ) {
+                    unit.setIndoorSerial(unitDTO.getIndoorSerial());
+                    unit.setOutdoorSerial(unitDTO.getOutdoorSerial());
+                    unit.setModelName(unitDTO.getModelName());
+                    unit.setCommissionedDate(unitDTO.getCommissionedDate());
+                    unit.setOwner(unitDTO.getOwner());
+                    unit.setWarrantyPeriod(unitDTO.getWarrantyPeriod());
+                    unit.setUnitPrice(unitDTO.getUnitPrice());
+                    unitRepo.save(unit);
+                    return ResponseEntity.ok(new MessageResponse("Unit updated successfully!"));
+                } else {
+                  return ResponseEntity.badRequest().body("Unit already added");
+                }
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unit with ID " + unitDTO.getId() + " not found");
             }
