@@ -99,7 +99,7 @@ public class Insertarr {
             List<String> privileges = Arrays.asList("accessEmployee", "accessItem", "accessUnit", "accessVehicle",
                     "accessCustomer", "accessUserGroup", "accessJob",
                     "accessServiceAgreement", "accessCalendar", "accessSiteVisit",
-                    "accessJobAllocation","createUser");
+                    "accessJobAllocation","createUser","complain");
 
             userGroup.setRelevantPrivileges(privileges);
             userGroupRepo.save(userGroup);
