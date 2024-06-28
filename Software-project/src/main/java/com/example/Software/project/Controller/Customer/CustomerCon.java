@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -64,13 +65,17 @@ public class CustomerCon {
             Optional<Customer> optionalCustomer = customerRepo.findById(customerDTO.getId());
             if (optionalCustomer.isPresent()) {
                 Customer customer = optionalCustomer.get();
-                customer.setCustomerName(customerDTO.getCustomerName());
-                customer.setAddress(customerDTO.getAddress());
-                customer.setContactNumber(customerDTO.getContactNumber());
-                customer.setEmail(customerDTO.getEmail());
-                customer.setLocation(customerDTO.getLocation());
-                customerRepo.save(customer);
-                return ResponseEntity.ok(new MessageResponse("Customer updated successfully!"));
+                if (!customerRepo.existsByContactNumber(customerDTO.getContactNumber()) || Objects.equals(customerDTO.getContactNumber(), customer.getContactNumber())) {
+                    customer.setCustomerName(customerDTO.getCustomerName());
+                    customer.setAddress(customerDTO.getAddress());
+                    customer.setContactNumber(customerDTO.getContactNumber());
+                    customer.setEmail(customerDTO.getEmail());
+                    customer.setLocation(customerDTO.getLocation());
+                    customerRepo.save(customer);
+                    return ResponseEntity.ok(new MessageResponse("Customer updated successfully!"));
+                } else {
+                    return ResponseEntity.badRequest().body("Customer already exists by same contact number");
+                }
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with ID " + customerDTO.getId() + " not found");
             }
