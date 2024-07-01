@@ -50,7 +50,6 @@ public class ReviewedComplainCon {
                             .filter(reviewedComplain -> reviewedComplain.getEmail().equals(user.getEmail()))
                             .map(reviewedComplain -> new UserComplainRevDTO(user, reviewedComplain))
                     ).collect(Collectors.toList());
-
             return ResponseEntity.ok().body(userComplainRevDTOS);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("This is error: " + e.getMessage());

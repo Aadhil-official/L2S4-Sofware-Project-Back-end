@@ -2,11 +2,14 @@ package com.example.Software.project.Entity.DTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 
 @Data
@@ -17,22 +20,17 @@ public class JobDTO {
     private String id;
 
     @NotBlank
-    @Email
-    private String email;
+    private String vehicleNumber;
 
     @NotBlank
-    private String itemIssue;
+    private String status;
 
     @NotBlank
-    private String customerDetails;
+    private String customerName;
 
     @NotBlank
-    private String employeeDetails;
+    private String date;
 
-    @NotBlank
-    private String location;
-
-    @NotBlank
-    @Size(max = 10)
-    private String item;
+    @NotEmpty
+    private List<String> teamMembers ;
 }

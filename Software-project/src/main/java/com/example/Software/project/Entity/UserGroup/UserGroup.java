@@ -1,6 +1,7 @@
 package com.example.Software.project.Entity.UserGroup;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,8 +24,8 @@ public class UserGroup {
     @NotBlank
     private String groupDescription;
 
-    @NotBlank
-    private List<@NotBlank String> relevantPrivileges;
+    @NotEmpty
+    private List<String> relevantPrivileges;
 
     @NotBlank
     private String allocatedJobs;

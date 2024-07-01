@@ -1,6 +1,7 @@
 package com.example.Software.project.Entity.DTO;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,8 @@ public class UserGroupDTO {
     private String groupDescription;
 
 
-    @NotBlank
-    private List<@NotBlank String> relevantPrivileges;
+    @NotEmpty
+    private List<String> relevantPrivileges;
 
 
     @NotBlank

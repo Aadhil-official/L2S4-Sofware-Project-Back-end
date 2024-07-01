@@ -116,6 +116,13 @@
 			<version>3.3.1</version>
 		</dependency>
 
+<!--&lt;!&ndash;		<dependencies>&ndash;&gt;-->
+<!--			<dependency>-->
+<!--				<groupId>org.mongodb</groupId>-->
+<!--				<artifactId>mongodb-driver-sync</artifactId>-->
+<!--				<version>5.1.1</version>-->
+<!--			</dependency>-->
+<!--&lt;!&ndash;		</dependencies>&ndash;&gt;-->
 
 		<!--		&lt;!&ndash; https://mvnrepository.com/artifact/com.fasterxml.uuid/java-uuid-generator &ndash;&gt;-->
 <!--		<dependency>-->
