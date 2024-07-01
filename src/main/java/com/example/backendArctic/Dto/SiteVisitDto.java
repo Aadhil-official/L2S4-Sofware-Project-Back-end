@@ -18,7 +18,7 @@ public class SiteVisitDto {
     @NotBlank
     private String location;
     @NotBlank
-    private String groupName;
+    private String customerName;
     @NotBlank
     private String jobType;
     @NotBlank
@@ -27,6 +27,8 @@ public class SiteVisitDto {
     private String scheduleDate;
     @NotBlank
     private String selectedTime;
+    @NotBlank
+    private Number numberOfEmployees;
 
 
 }

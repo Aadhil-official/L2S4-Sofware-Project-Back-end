@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -19,9 +17,9 @@ public class GatePassDto {
     @NotBlank
     private String vehicleNumber;
     @NotBlank
-    private String groupName;
-    @NotBlank
     private String customerName;
+    @NotBlank
+    private String numesOfEmployees;
 
 
 }

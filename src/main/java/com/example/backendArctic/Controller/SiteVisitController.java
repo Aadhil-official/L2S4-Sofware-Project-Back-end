@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class SiteVisitController {
 //    private final UserGroupRepo userGroupRepo;
 
     @PostMapping("/addSiteVisit")
-    public ResponseEntity<String> addSiteVisit(@RequestBody SiteVisit siteVisit) {
+    public ResponseEntity<?> addSiteVisit(@RequestBody SiteVisit siteVisit) {
         try {
 //            GatePass gatePass =new GatePass();
 //            gatePass.setId(siteVisit.getVisitId());
@@ -51,26 +52,27 @@ public class SiteVisitController {
 
 
             siteVisitRepo.save(siteVisit);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Site Visit Added Successfully");
+//            return ResponseEntity.ok().body(siteVisit.getVisitId());
+            return ResponseEntity.ok().body(Collections.singletonMap("visitId", siteVisit.getVisitId()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
-    @GetMapping("/getGatePass")
-    public ResponseEntity<?> getGatePass(@RequestParam String id){
-        try {
-            Optional<GatePass> optionalGatePass = gatePassRepo.findById(id);
-            if (optionalGatePass.isPresent()){
-                return ResponseEntity.ok().body(optionalGatePass);
-
-            }else {
-                return ResponseEntity.badRequest().body("Gate pass not found");
-            }
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @GetMapping("/getGatePass")
+//    public ResponseEntity<?> getGatePass(@RequestParam String id){
+//        try {
+//            Optional<GatePass> optionalGatePass = gatePassRepo.findById(id);
+//            if (optionalGatePass.isPresent()){
+//                return ResponseEntity.ok().body(optionalGatePass);
+//
+//            }else {
+//                return ResponseEntity.badRequest().body("Gate pass not found");
+//            }
+//        }catch (Exception e){
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
 
     @PutMapping("/updateSiteVisit")
@@ -83,9 +85,10 @@ public class SiteVisitController {
 
                     siteVisit.setVehicleNumber(siteVisitDto.getVehicleNumber());
                     siteVisit.setLocation(siteVisitDto.getLocation());
-                    siteVisit.setGroupName(siteVisitDto.getGroupName());
+                    siteVisit.setCustomerName(siteVisitDto.getCustomerName());
                     siteVisit.setScheduleDate(siteVisitDto.getScheduleDate());
                     siteVisit.setSelectedTime(siteVisitDto.getSelectedTime());
+                    siteVisit.setNumberOfEmployees(siteVisitDto.getNumberOfEmployees());
                     siteVisit.setEmail(siteVisitDto.getEmail());
                     siteVisitRepo.save(siteVisit);
                     return ResponseEntity.ok("Site Visit updated successfully!");
@@ -129,6 +132,9 @@ public class SiteVisitController {
 //        Optional<GatePass> gatePass = gatePassRepo.findById(id);
 //        return ResponseEntity.ok().body(gatePass);
 //    }
+
+
+
 
 
 

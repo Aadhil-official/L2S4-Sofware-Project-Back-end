@@ -20,9 +20,9 @@ public class GatePass {
     @NotBlank
     private String vehicleNumber;
     @NotBlank
-    private String groupName;
-    @NotBlank
     private String customerName;
+//    @NotBlank
+//    private String numesOfEmployees;
 
     //private Set<GpMembers> gpMembers = new HashSet<>();
 
