@@ -1,25 +1,24 @@
-package com.example.backendArctic.Dto;
+package com.example.backendArctic.Entity.Dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Document
 @Data
-public class FeedBackDto {
-    @Id
+@Document
+
+public class SiteVisitDto {
     private String visitId;
     @NotBlank
     private String vehicleNumber;
     @NotBlank
     private String location;
     @NotBlank
-    private String groupName;
+    private String customerName;
     @NotBlank
     private String jobType;
     @NotBlank
@@ -29,5 +28,7 @@ public class FeedBackDto {
     @NotBlank
     private String selectedTime;
     @NotBlank
-    private String feedback;
+    private Number numberOfEmployees;
+
+
 }

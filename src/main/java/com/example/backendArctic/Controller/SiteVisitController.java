@@ -1,7 +1,6 @@
 package com.example.backendArctic.Controller;
 
-import com.example.backendArctic.Dto.SiteVisitDto;
-import com.example.backendArctic.Entity.GatePass;
+import com.example.backendArctic.Entity.Dto.SiteVisitDto;
 import com.example.backendArctic.Entity.SiteVisit;
 import com.example.backendArctic.Repo.GatePassRepo;
 import com.example.backendArctic.Repo.SiteVisitRepo;

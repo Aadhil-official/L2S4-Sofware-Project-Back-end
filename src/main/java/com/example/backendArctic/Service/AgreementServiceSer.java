@@ -1,6 +1,6 @@
 package com.example.backendArctic.Service;
 
-import com.example.backendArctic.Dto.AgreementServiceDto;
+import com.example.backendArctic.Entity.Dto.AgreementServiceDto;
 import com.example.backendArctic.Entity.AgreementService;
 import com.example.backendArctic.Repo.AgreementServiceRepo;
 import com.example.backendArctic.Util.VarList;

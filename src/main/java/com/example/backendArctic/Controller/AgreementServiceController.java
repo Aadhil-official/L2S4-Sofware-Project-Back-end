@@ -1,7 +1,7 @@
 package com.example.backendArctic.Controller;
 
-import com.example.backendArctic.Dto.AgreementServiceDto;
-import com.example.backendArctic.Dto.ResponseDto;
+import com.example.backendArctic.Entity.Dto.AgreementServiceDto;
+import com.example.backendArctic.Entity.Dto.ResponseDto;
 import com.example.backendArctic.Entity.AgreementService;
 import com.example.backendArctic.Entity.Job;
 import com.example.backendArctic.Repo.AgreementServiceRepo;

@@ -1,4 +1,4 @@
-package com.example.backendArctic.Dto;
+package com.example.backendArctic.Entity.Dto;
 
 
 import lombok.AllArgsConstructor;
