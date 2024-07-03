@@ -30,16 +30,23 @@ public class EmailService {
     }
 
     // Scheduled task to run every day at 8 AM
-    @Scheduled(cron = "0 2 13 * * ?")
+    @Scheduled(cron = "0 38 20 * * ?")
     public void sendSiteVisitReminders() {
         LocalDate today = LocalDate.now();
         List<SiteVisit> visits = siteVisitRepo.findByScheduleDate(today.toString());
         for (SiteVisit visit : visits) {
             sendEmail(
                     visit.getEmail(),
-                    "Site Visit Reminder",
-                    "Dear user, this is a reminder for your site visit scheduled today at " + visit.getSelectedTime()
-                            + ". Please make sure to start your visit by marking  on System."
+                    "Arctic Pvt.Ltd Site Visit Reminder",
+                    "Dear "+visit.getCustomerName()+","+ "\n"+"\n"+
+                            "I wish to pay your kind attention above mentioned topic."+"\n\n"+
+                            "This is a reminder for your site visit scheduled today at " + visit.getSelectedTime()
+                            + "Our team will reach out to you prior to arrival at the location. We greatly appreciate your cooperation and look forward to meeting you." +
+                            "\n\n" +
+                            "Thank you for your attention." +
+                            "\n\n" +
+                            "Best Regards,"+"\n"+
+                            "Arctic Pvt(Ltd)."
             );
         }
     }
