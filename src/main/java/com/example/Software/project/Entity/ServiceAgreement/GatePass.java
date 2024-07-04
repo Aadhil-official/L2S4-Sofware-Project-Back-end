@@ -1,4 +1,4 @@
-package com.example.Software.project.Entity.ServiceAgreement;
+package com.example.backendArctic.Entity;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -7,26 +7,27 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "services")
-public class ServiceAgreement {
+@Data
+@Document(collection = "Gate_Pass")
+public class GatePass {
+
     @Id
     private String id;
+    @NotBlank
+    private String vehicleNumber;
+    @NotBlank
+    private String customerName;
+//    @NotBlank
+//    private String numesOfEmployees;
+
+    //private Set<GpMembers> gpMembers = new HashSet<>();
 
     @NotBlank
-    private String cusName;
+    private List<@NotBlank String> gpMembers;
 
-    @NotBlank
-    private String location;
 
-    @NotBlank
-    private String item;
-
-    @NotBlank
-    private String agrType;
-
-    @NotBlank
-    private String periMonth;
 }
