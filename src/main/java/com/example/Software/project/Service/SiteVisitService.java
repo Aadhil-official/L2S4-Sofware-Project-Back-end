@@ -1,13 +1,13 @@
-package com.example.backendArctic.Service;
+package com.example.Software.project.Service;
 
-import com.example.backendArctic.Entity.CancelDates;
-import com.example.backendArctic.Entity.ClickDate;
-import com.example.backendArctic.Entity.EndDates;
-import com.example.backendArctic.Entity.SiteVisit;
-import com.example.backendArctic.Repo.CancelDateRepository;
-import com.example.backendArctic.Repo.ClickDateRepository;
-import com.example.backendArctic.Repo.EndDateRepository;
-import com.example.backendArctic.Repo.SiteVisitRepo;
+import com.example.Software.project.Entity.ServiceAgreement.CancelDates;
+import com.example.Software.project.Entity.ServiceAgreement.ClickDate;
+import com.example.Software.project.Entity.ServiceAgreement.EndDates;
+import com.example.Software.project.Entity.ServiceAgreement.SiteVisit;
+import com.example.Software.project.Repo.ServiceAgreement.CancelDateRepository;
+import com.example.Software.project.Repo.ServiceAgreement.ClickDateRepository;
+import com.example.Software.project.Repo.ServiceAgreement.EndDateRepository;
+import com.example.Software.project.Repo.ServiceAgreement.SiteVisitRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.example.backendArctic.Entity;
+package com.example.Software.project.Entity.ServiceAgreement;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;

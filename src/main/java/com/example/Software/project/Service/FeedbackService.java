@@ -1,7 +1,7 @@
-package com.example.backendArctic.Service;
+package com.example.Software.project.Service;
 
-import com.example.backendArctic.Entity.FeedBackForm;
-import com.example.backendArctic.Repo.FeedBackRepo;
+import com.example.Software.project.Entity.ServiceAgreement.FeedBackForm;
+import com.example.Software.project.Repo.ServiceAgreement.FeedBackRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

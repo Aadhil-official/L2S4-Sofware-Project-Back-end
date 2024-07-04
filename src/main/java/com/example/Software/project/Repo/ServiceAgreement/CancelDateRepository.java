@@ -1,7 +1,6 @@
-package com.example.backendArctic.Repo;
+package com.example.Software.project.Repo.ServiceAgreement;
 
-
-import com.example.backendArctic.Entity.CancelDates;
+import com.example.Software.project.Entity.ServiceAgreement.CancelDates;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

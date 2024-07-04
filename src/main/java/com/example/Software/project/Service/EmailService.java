@@ -1,7 +1,7 @@
-package com.example.backendArctic.Service;
+package com.example.Software.project.Service;
 
-import com.example.backendArctic.Entity.SiteVisit;
-import com.example.backendArctic.Repo.SiteVisitRepo;
+import com.example.Software.project.Entity.ServiceAgreement.SiteVisit;
+import com.example.Software.project.Repo.ServiceAgreement.SiteVisitRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,11 +14,14 @@ import java.util.List;
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
-    @Autowired
-    private SiteVisitRepo siteVisitRepo;
+    private final SiteVisitRepo siteVisitRepo;
+
+    public EmailService(JavaMailSender mailSender, SiteVisitRepo siteVisitRepo) {
+        this.mailSender = mailSender;
+        this.siteVisitRepo = siteVisitRepo;
+    }
 
     // Method to send a simple email
     public void sendEmail(String to, String subject, String text) {

@@ -1,8 +1,8 @@
-package com.example.backendArctic.Controller;
+package com.example.Software.project.Controller.ServiceAgreement;
 
 
-import com.example.backendArctic.Entity.GatePass;
-import com.example.backendArctic.Repo.GatePassRepo;
+import com.example.Software.project.Entity.ServiceAgreement.GatePass;
+import com.example.Software.project.Repo.ServiceAgreement.GatePassRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +13,9 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("api/v1/gatePass")
+@RequestMapping("api/auth/gatePass")
 public class GatePassController {
-    @Autowired
-    private GatePassRepo gatePassRepo;
+    private final GatePassRepo gatePassRepo;
 
     public GatePassController(GatePassRepo gatePassRepo) {
         this.gatePassRepo = gatePassRepo;
@@ -24,7 +23,7 @@ public class GatePassController {
 
 
     @PostMapping("/addGatePass")
-    public ResponseEntity<String> addGatePass (@RequestBody  GatePass gatePass){
+    public ResponseEntity<String> addGatePass (@RequestBody GatePass gatePass){
         try{
             gatePassRepo.save(gatePass);
             return ResponseEntity.status(HttpStatus.CREATED).body("Gate Pass Added Successfully");

@@ -1,6 +1,6 @@
-package com.example.backendArctic.Repo;
+package com.example.Software.project.Repo.ServiceAgreement;
 
-import com.example.backendArctic.Entity.GatePass;
+import com.example.Software.project.Entity.ServiceAgreement.GatePass;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface GatePassRepo extends MongoRepository<GatePass,String> {

@@ -1,6 +1,6 @@
-package com.example.backendArctic.Repo;
+package com.example.Software.project.Repo.ServiceAgreement;
 
-import com.example.backendArctic.Entity.EndDates;
+import com.example.Software.project.Entity.ServiceAgreement.EndDates;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

@@ -53,9 +53,9 @@
 //    }
 //
 //}
-package com.example.backendArctic.Controller;
+package com.example.Software.project.Controller.ServiceAgreement;
 
-import com.example.backendArctic.Service.SiteVisitService;
+import com.example.Software.project.Service.SiteVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,11 +63,14 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/siteVisitStEd")
+@RequestMapping("/api/auth/siteVisitStEd")
 public class SiteVisitStEd {
 
-    @Autowired
-    private SiteVisitService siteVisitService;
+    private final SiteVisitService siteVisitService;
+
+    public SiteVisitStEd(SiteVisitService siteVisitService) {
+        this.siteVisitService = siteVisitService;
+    }
 
     @PostMapping("/start/{visitId}")
     public ResponseEntity<String> startSiteVisit(@PathVariable String visitId) {

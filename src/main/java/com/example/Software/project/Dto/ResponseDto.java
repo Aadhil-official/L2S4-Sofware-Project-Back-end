@@ -1,4 +1,4 @@
-package com.example.backendArctic.Dto;
+package com.example.Software.project.Dto;
 
 
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.backendArctic.Entity;
+package com.example.Software.project.Entity.ServiceAgreement;
 
 import org.springframework.data.annotation.Id;
 

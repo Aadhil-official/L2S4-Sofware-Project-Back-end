@@ -1,13 +1,12 @@
-package com.example.backendArctic.Controller;
+package com.example.Software.project.Controller.ServiceAgreement;
 
-import com.example.backendArctic.Dto.AgreementServiceDto;
-import com.example.backendArctic.Dto.ResponseDto;
-import com.example.backendArctic.Entity.AgreementService;
-import com.example.backendArctic.Entity.Job;
-import com.example.backendArctic.Repo.AgreementServiceRepo;
-import com.example.backendArctic.Repo.JobRepo;
-import com.example.backendArctic.Service.AgreementServiceSer;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.Software.project.Dto.AgreementServiceDto;
+import com.example.Software.project.Dto.ResponseDto;
+import com.example.Software.project.Entity.ServiceAgreement.AgreementService;
+import com.example.Software.project.Entity.ServiceAgreement.Job;
+import com.example.Software.project.Repo.ServiceAgreement.AgreementServiceRepo;
+import com.example.Software.project.Repo.ServiceAgreement.JobRepo;
+import com.example.Software.project.Service.AgreementServiceSer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,22 +16,21 @@ import java.util.Optional;
 
 @CrossOrigin (origins = "*" ,maxAge =3600)
 @RestController
-@RequestMapping("api/v1/agreementService")
+@RequestMapping("api/auth/agreementService")
 public class AgreementServiceController {
-    @Autowired
-    private AgreementServiceSer agreementServiceSer;
+    private final AgreementServiceSer agreementServiceSer;
 
-    @Autowired
-    private ResponseDto responseDto;
+    private final ResponseDto responseDto;
 
-    @Autowired
-    private JobRepo jobRepo;
+    private final JobRepo jobRepo;
 
-    @Autowired
-    private AgreementServiceRepo agreementServiceRepo;
+    private final AgreementServiceRepo agreementServiceRepo;
 
-    public AgreementServiceController(AgreementServiceRepo agreementServiceRepo) {
+    public AgreementServiceController( AgreementServiceSer agreementServiceSer, ResponseDto responseDto, JobRepo jobRepo, AgreementServiceRepo agreementServiceRepo) {
         this.agreementServiceRepo = agreementServiceRepo;
+        this.agreementServiceSer = agreementServiceSer;
+        this.responseDto = responseDto;
+        this.jobRepo = jobRepo;
     }
 
 

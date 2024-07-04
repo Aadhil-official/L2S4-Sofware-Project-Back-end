@@ -1,4 +1,4 @@
-package com.example.backendArctic.Config;
+package com.example.Software.project.config.ServiceAgrement;
 
 
 import org.modelmapper.ModelMapper;

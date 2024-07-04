@@ -1,10 +1,9 @@
-package com.example.backendArctic.Controller;
+package com.example.Software.project.Controller.ServiceAgreement;
 
-import com.example.backendArctic.Dto.SiteVisitDto;
-import com.example.backendArctic.Entity.GatePass;
-import com.example.backendArctic.Entity.SiteVisit;
-import com.example.backendArctic.Repo.GatePassRepo;
-import com.example.backendArctic.Repo.SiteVisitRepo;
+import com.example.Software.project.Dto.SiteVisitDto;
+import com.example.Software.project.Entity.ServiceAgreement.SiteVisit;
+import com.example.Software.project.Repo.ServiceAgreement.GatePassRepo;
+import com.example.Software.project.Repo.ServiceAgreement.SiteVisitRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +15,16 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("api/v1/siteVisit")
+@RequestMapping("api/auth/siteVisit")
 public class SiteVisitController {
 
-    @Autowired
-    private SiteVisitRepo siteVisitRepo;
+    private final SiteVisitRepo siteVisitRepo;
 
     private GatePassRepo gatePassRepo;
+
+    public SiteVisitController(SiteVisitRepo siteVisitRepo) {
+        this.siteVisitRepo = siteVisitRepo;
+    }
 
 //    private final AppUserRepo appUserRepo;
 //

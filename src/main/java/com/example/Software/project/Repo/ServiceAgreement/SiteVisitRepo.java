@@ -1,6 +1,6 @@
-package com.example.backendArctic.Repo;
+package com.example.Software.project.Repo.ServiceAgreement;
 
-import com.example.backendArctic.Entity.SiteVisit;
+import com.example.Software.project.Entity.ServiceAgreement.SiteVisit;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
