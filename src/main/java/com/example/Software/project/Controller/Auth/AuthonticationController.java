@@ -391,7 +391,7 @@ public class AuthonticationController {
 //                if(userDto.getRoles()==="admin"){
 //                    user.setRoles(roles);
 //                }else {
-                    user.setRoles(user.getRoles());
+                    user.setRoles(userDto.getRoles());
 //                }
 //                System.out.println(user.getRoles());
 //                List<Role> roles = userDto.getRoles().stream()
