@@ -40,6 +40,7 @@ public class AppUserDTO {
     @Size(max = 150)
     private String usergroup;
 
-    private Set<Role> roles;
+    @DBRef
+    private Set<Role> roles = new HashSet<>();
 
 }
