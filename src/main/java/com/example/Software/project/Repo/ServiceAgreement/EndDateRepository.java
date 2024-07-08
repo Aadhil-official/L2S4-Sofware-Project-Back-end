@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EndDateRepository extends MongoRepository<EndDates, Long> {
+public interface EndDateRepository extends MongoRepository<EndDates, String> {
     boolean existsByVisitId(String visitId);
     // You can define custom queries or methods here if needed
 }

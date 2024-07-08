@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CancelDateRepository extends MongoRepository<CancelDates,Long> {
+public interface CancelDateRepository extends MongoRepository<CancelDates,String> {
     boolean existsByVisitId(String visitId);
 }
