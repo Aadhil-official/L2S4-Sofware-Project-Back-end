@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 //import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 //import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -44,7 +45,7 @@ public class RegisterRequest {
     private String password = generatePassword();
 
 
-    private String generatePassword() {
+    public String generatePassword() {
         Random random = new Random();
         int otpLength = 8;
         StringBuilder pass = new StringBuilder();

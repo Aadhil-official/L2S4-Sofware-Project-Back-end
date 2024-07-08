@@ -285,7 +285,7 @@ public class AuthonticationController {
     }
 
 
-    private void sendEmail(String email, String subject, String object) {
+    public void sendEmail(String email, String subject, String object) {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
         try {
@@ -348,7 +348,6 @@ public class AuthonticationController {
                 if (!Objects.equals(userDto.getRoles().toString(), user.getRoles().toString())) {
                     String newRoles = String.join(", ", userDtoRoleNames);
                     role = "Your role is changed with: " + newRoles + "\n";
-
                 }
                 if (!Objects.equals(userDto.getUsergroup(), user.getUsergroup())) {
                     userGroup = "Your group is changed with: " + userDto.getUsergroup() + "\n";

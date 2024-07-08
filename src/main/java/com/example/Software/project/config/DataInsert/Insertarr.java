@@ -1,5 +1,6 @@
 package com.example.Software.project.config.DataInsert;
 
+import com.example.Software.project.Controller.Auth.AuthonticationController;
 import com.example.Software.project.Entity.Login.AppUser;
 import com.example.Software.project.Entity.Login.LogRole;
 import com.example.Software.project.Entity.Login.Role;
@@ -28,12 +29,15 @@ public class Insertarr {
     private final AppUserRepo userRepository;
     private final RoleRepo repository;
 
-    public Insertarr(UserGroupRepo userGroupRepo, PasswordEncoder encoder, JavaMailSender emailSender, AppUserRepo userRepository, RoleRepo repository) {
+    private final AuthonticationController authonticationController;
+
+    public Insertarr(UserGroupRepo userGroupRepo, PasswordEncoder encoder, JavaMailSender emailSender, AppUserRepo userRepository, RoleRepo repository, AuthonticationController authonticationController) {
         this.userGroupRepo = userGroupRepo;
         this.encoder = encoder;
         this.emailSender = emailSender;
         this.userRepository = userRepository;
         this.repository = repository;
+        this.authonticationController = authonticationController;
     }
 
     @Bean
@@ -70,8 +74,8 @@ public class Insertarr {
                         "Password: " + pass + "\n\n" +
                         "Please change your password after logging in for the first time.\n\n" +
                         "Regards,\nYour Team";
-
-                sendEmail(adminUser.getEmail(), subject, message);
+                authonticationController.sendEmail(adminUser.getEmail(), subject, message);
+//                sendEmail(adminUser.getEmail(), subject, message);
             }
         };
     }
@@ -106,19 +110,19 @@ public class Insertarr {
         }
     }
 
-
-    private void sendEmail(String email, String subject, String message) {
-        MimeMessage mimeMessage = emailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-        try {
-            helper.setTo(email);
-            helper.setSubject(subject);
-            helper.setText(message);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-        emailSender.send(mimeMessage);
-    }
+//
+//    private void sendEmail(String email, String subject, String message) {
+//        MimeMessage mimeMessage = emailSender.createMimeMessage();
+//        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+//        try {
+//            helper.setTo(email);
+//            helper.setSubject(subject);
+//            helper.setText(message);
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        }
+//        emailSender.send(mimeMessage);
+//    }
 
     private String generateNumber() {
         Random random = new Random();
