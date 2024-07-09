@@ -13,8 +13,11 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeesService {
 
-    @Autowired
-    private EmployeesRepository employeesRepository;
+    private final EmployeesRepository employeesRepository;
+
+    public EmployeesService(EmployeesRepository employeesRepository) {
+        this.employeesRepository = employeesRepository;
+    }
 
     public Map<String, Long> getEmployeesCounts() {
         List<Employees> employees = employeesRepository.findAll();

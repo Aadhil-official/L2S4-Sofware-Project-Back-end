@@ -19,7 +19,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 //@AllArgsConstructor
-@Document(collection = "appUser") //to map the instances
+@Document(collection = "employees") //to map the instances
 public class AppUser {
     @Id
     private String id;
