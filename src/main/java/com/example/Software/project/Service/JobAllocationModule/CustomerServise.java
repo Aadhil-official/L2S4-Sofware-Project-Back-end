@@ -1,10 +1,10 @@
-package com.example.project_backend.Service;
+package com.example.Software.project.Service.JobAllocationModule;
 
-import com.example.project_backend.DTO.CustomerDTO;
-import com.example.project_backend.Entity.Customer;
-import com.example.project_backend.Entity.JobListEntity;
-import com.example.project_backend.Entity.TeamMemberEntity;
-import com.example.project_backend.Repository.CustomerRepository;
+import com.example.Software.project.Dto.JobAllocationModule.CustomerDTO;
+import com.example.Software.project.Entity.JobAllocationModule.Customer;
+import com.example.Software.project.Entity.JobAllocationModule.JobListEntity;
+import com.example.Software.project.Entity.JobAllocationModule.TeamMemberEntity;
+import com.example.Software.project.Repo.JobAllocationModule.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,6 +1,6 @@
 package com.example.Software.project.Service.JobAllocationModule;
 
-import com.example.project_backend.DTO.PrintDTO;
+import com.example.Software.project.Dto.JobAllocationModule.PrintDTO;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;

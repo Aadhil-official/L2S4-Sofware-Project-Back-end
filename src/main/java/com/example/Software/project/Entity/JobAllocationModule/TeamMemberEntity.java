@@ -28,7 +28,7 @@ public class TeamMemberEntity {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private com.example.project_backend.Entity.Customer customer;
+    private com.example.Software.project.Entity.JobAllocationModule.Customer customer;
 
     public void setEmployeeName(String employeeName) {
     }
@@ -42,7 +42,7 @@ public class TeamMemberEntity {
     public void setEmployeeEmail(String employeeEmail) {
     }
 
-    public void setCustomer(com.example.project_backend.Entity.Customer customer) {
+    public void setCustomer(com.example.Software.project.Entity.JobAllocationModule.Customer customer) {
     }
 
     // Getters and Setters

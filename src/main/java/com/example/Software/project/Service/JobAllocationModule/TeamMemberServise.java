@@ -1,7 +1,7 @@
 package com.example.Software.project.Service.JobAllocationModule;
 
-import com.example.project_backend.DTO.TeamMemberDTO;
-import com.example.project_backend.Entity.TeamMemberEntity;
+import com.example.Software.project.Dto.JobAllocationModule.TeamMemberDTO;
+import com.example.Software.project.Entity.JobAllocationModule.TeamMemberEntity;
 
 import java.util.List;
 

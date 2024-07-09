@@ -1,7 +1,7 @@
 
 //add new job form එක
 
-package com.example.project_backend.Entity;
+package com.example.Software.project.Entity.JobAllocationModule;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

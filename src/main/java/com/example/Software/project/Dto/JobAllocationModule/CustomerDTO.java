@@ -3,7 +3,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import com.example.project_backend.DTO.TeamMemberDTO;
+import com.example.Software.project.Dto.JobAllocationModule.TeamMemberDTO;
 import java.util.List;
 
 @Getter

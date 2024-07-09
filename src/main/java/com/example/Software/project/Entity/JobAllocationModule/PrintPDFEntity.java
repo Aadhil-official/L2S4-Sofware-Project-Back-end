@@ -1,6 +1,6 @@
 package com.example.Software.project.Entity.JobAllocationModule;
 
-import com.example.project_backend.DTO.PrintDTO;
+import com.example.Software.project.Dto.JobAllocationModule.PrintDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;

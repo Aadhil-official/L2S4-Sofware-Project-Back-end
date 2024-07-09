@@ -1,7 +1,7 @@
 package com.example.Software.project.Service.JobAllocationModule;
 
-import com.example.project_backend.Entity.JobListEntity;
-import com.example.project_backend.Repository.JobListRepository;
+import com.example.Software.project.Entity.JobAllocationModule.JobListEntity;
+import com.example.Software.project.Repo.JobAllocationModule.JobListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
