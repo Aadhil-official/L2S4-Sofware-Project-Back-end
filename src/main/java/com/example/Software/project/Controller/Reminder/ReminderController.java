@@ -12,7 +12,7 @@ import com.example.Software.project.Repo.Reminder.ReminderRepository;
 import com.example.Software.project.Service.Reminder.ReminderService;
 
 @RestController
-@RequestMapping("/api/reminders")
+@RequestMapping("/api/auth")
 @CrossOrigin(origins= "*")
 public class ReminderController {
 
@@ -23,12 +23,12 @@ public class ReminderController {
         this.reminderService = reminderService;
     }
 
-    @GetMapping
+    @GetMapping("/reminder")
     public List<Reminder> getAllEvents() {
         return reminderRepository.findAll();
     }
 
-    @PostMapping
+    @PostMapping("/createReminder")
     public Reminder createReminder(@RequestBody Reminder reminder) {
         return reminderService.saveReminder(reminder);
         
