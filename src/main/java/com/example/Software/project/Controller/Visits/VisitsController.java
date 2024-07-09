@@ -14,8 +14,11 @@ import java.util.Map;
 @RequestMapping("/visits")
 public class VisitsController {
 
-    @Autowired
-    private VisitsService visitsService;
+    private final VisitsService visitsService;
+
+    public VisitsController(VisitsService visitsService) {
+        this.visitsService = visitsService;
+    }
 
 
     @GetMapping

@@ -15,8 +15,11 @@ import java.util.Map;
 @RequestMapping("/counts")
 public class CountsController {
 
-    @Autowired
-    private CountsService countsService;
+    private final CountsService countsService;
+
+    public CountsController(CountsService countsService) {
+        this.countsService = countsService;
+    }
 
     @GetMapping
     public ResponseEntity<Map<String, Long>> getCounts() {

@@ -13,8 +13,11 @@ import java.util.Map;
 @RequestMapping("/jobs")
 public class JobsController {
 
-    @Autowired
-    private JobsService jobsService;
+    private final JobsService jobsService;
+
+    public JobsController(JobsService jobsService) {
+        this.jobsService = jobsService;
+    }
 
     @GetMapping
     public Map<String, Long> getCurrentMonthStatus() {

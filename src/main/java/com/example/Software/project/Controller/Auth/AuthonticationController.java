@@ -39,6 +39,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 import jakarta.validation.Valid;
@@ -68,8 +69,10 @@ public class AuthonticationController {
 
     private final JavaMailSender emailSender;
 
+    private final RoleRepo roleRepo;
+
     @Autowired
-    public AuthonticationController(AuthenticationManager authenticationManager, AppUserRepo userRepository, RoleRepo roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils, UserGroupRepo userGroupRepo, JavaMailSender emailSender) {
+    public AuthonticationController(AuthenticationManager authenticationManager, AppUserRepo userRepository, RoleRepo roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils, UserGroupRepo userGroupRepo, JavaMailSender emailSender, RoleRepo roleRepo) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -77,6 +80,7 @@ public class AuthonticationController {
         this.jwtUtils = jwtUtils;
         this.userGroupRepo = userGroupRepo;
         this.emailSender = emailSender;
+        this.roleRepo = roleRepo;
     }
 
     @PostMapping("/signin")
@@ -390,8 +394,17 @@ public class AuthonticationController {
 //                if(userDto.getRoles()==="admin"){
 //                    user.setRoles(roles);
 //                }else {
-                    user.setRoles(user.getRoles());
-//                }
+                    Set<Role> roles = userDto.getRoles().stream()
+                            .map(onrole -> roleRepository.findByName(onrole.getName()))
+                            .filter(Optional::isPresent)
+                            .map(Optional::get)
+                            .collect(Collectors.toSet());
+
+                    user.setRoles(roles);
+//                } System.out.println(userDto.getRoles());
+//                    if (userDto.getRoles().getName()=="ADMIN"){
+//                        roleRepo.findByName()
+//                    }
 //                System.out.println(user.getRoles());
 //                List<Role> roles = userDto.getRoles().stream()
 //                        .map(roleName -> roleRepository.findByName(LogRole.valueOf(roleName.toUpperCase())))

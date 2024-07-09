@@ -17,8 +17,11 @@ import java.util.Map;
 @RequestMapping("/events")
 public class EventController {
 
-    @Autowired
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
+
+    public EventController(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
     // private EventService eventService;
 
     @GetMapping

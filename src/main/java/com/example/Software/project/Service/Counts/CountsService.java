@@ -22,26 +22,29 @@ import com.example.Software.project.Repo.Visits.VisitsRepository;
 @Service
 public class CountsService {
 
-    @Autowired
-    private UnitsRepository unitsRepository;
+    private final UnitsRepository unitsRepository;
 
-    @Autowired
-    private JobsRepository jobsRepository;
+    private final JobsRepository jobsRepository;
 
-    @Autowired
-    private VehiclesRepository vehiclesRepository;
+    private final VehiclesRepository vehiclesRepository;
 
-    @Autowired
-    private ItemRepo itemsRepository;
+    private final ItemRepo itemsRepository;
 
-    @Autowired
-    private CustomerRepo customersRepository;
+    private final CustomerRepo customersRepository;
 
-    @Autowired
-    private EmployeesRepository employeesRepository;
+    private final EmployeesRepository employeesRepository;
 
-    @Autowired
-    private VisitsRepository visitsRepository;
+    private final VisitsRepository visitsRepository;
+
+    public CountsService(UnitsRepository unitsRepository, JobsRepository jobsRepository, VehiclesRepository vehiclesRepository, ItemRepo itemsRepository, CustomerRepo customersRepository, EmployeesRepository employeesRepository, VisitsRepository visitsRepository) {
+        this.unitsRepository = unitsRepository;
+        this.jobsRepository = jobsRepository;
+        this.vehiclesRepository = vehiclesRepository;
+        this.itemsRepository = itemsRepository;
+        this.customersRepository = customersRepository;
+        this.employeesRepository = employeesRepository;
+        this.visitsRepository = visitsRepository;
+    }
 
     public long getUnitsCount() {
         return unitsRepository.count();

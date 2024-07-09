@@ -16,11 +16,14 @@ import com.example.Software.project.Service.Reminder.ReminderService;
 @CrossOrigin(origins= "*")
 public class ReminderController {
 
-    @Autowired
-    private ReminderService reminderService;
+    private final ReminderService reminderService;
     private ReminderRepository reminderRepository;
 
-      @GetMapping
+    public ReminderController(ReminderService reminderService) {
+        this.reminderService = reminderService;
+    }
+
+    @GetMapping
     public List<Reminder> getAllEvents() {
         return reminderRepository.findAll();
     }

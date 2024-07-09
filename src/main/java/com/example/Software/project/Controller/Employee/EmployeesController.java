@@ -13,8 +13,11 @@ import java.util.Map;
 @RequestMapping("/employees")
 public class EmployeesController {
 
-    @Autowired
-    private EmployeesService employeesService;
+    private final EmployeesService employeesService;
+
+    public EmployeesController(EmployeesService employeesService) {
+        this.employeesService = employeesService;
+    }
 
     @GetMapping
     public Map<String, Long> getEmployeesCounts() {
