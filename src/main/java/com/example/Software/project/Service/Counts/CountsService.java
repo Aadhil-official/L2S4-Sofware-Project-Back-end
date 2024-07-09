@@ -11,7 +11,7 @@ import com.example.Software.project.Repo.Customer.CustomerRepo;
 import com.example.Software.project.Repo.Employee.EmployeesRepository;
 import com.example.Software.project.Repo.Item.ItemRepo;
 import com.example.Software.project.Repo.Jobs.JobsRepository;
-import com.example.Software.project.Repo.Units.UnitsRepository;
+import com.example.Software.project.Repo.Unit.UnitRepo;
 import com.example.Software.project.Repo.Visits.VisitsRepository;
 import com.example.Software.project.Repo.Vehicle.VehicleRepo;
 
@@ -22,7 +22,7 @@ import com.example.Software.project.Repo.Vehicle.VehicleRepo;
 @Service
 public class CountsService {
 
-    private final UnitsRepository unitsRepository;
+    private final UnitRepo unitsRepository;
 
     private final JobsRepository jobsRepository;
 
@@ -36,7 +36,7 @@ public class CountsService {
 
     private final VisitsRepository visitsRepository;
 
-    public CountsService(UnitsRepository unitsRepository, JobsRepository jobsRepository, VehicleRepo vehiclesRepository, ItemRepo itemsRepository, CustomerRepo customersRepository, EmployeesRepository employeesRepository, VisitsRepository visitsRepository) {
+    public CountsService(UnitRepo unitsRepository, JobsRepository jobsRepository, VehicleRepo vehiclesRepository, ItemRepo itemsRepository, CustomerRepo customersRepository, EmployeesRepository employeesRepository, VisitsRepository visitsRepository) {
         this.unitsRepository = unitsRepository;
         this.jobsRepository = jobsRepository;
         this.vehiclesRepository = vehiclesRepository;
