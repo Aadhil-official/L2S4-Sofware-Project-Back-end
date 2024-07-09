@@ -14,19 +14,19 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/api/auth")
 public class EventController {
 
     @Autowired
     private EventRepository eventRepository;
     // private EventService eventService;
 
-    @GetMapping
+    @GetMapping("/events")
     public List<Event> getAllEvents() {
         return eventRepository.findAll();
     }
 
-    @PostMapping
+    @PostMapping("/addEvent")
     public ResponseEntity<Map<String, Object>> createEvent(@RequestBody Event event) {
         Map<String, Object> response = new HashMap<>();
         
@@ -44,7 +44,7 @@ public class EventController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/updateEvent/{id}")
     public Event updateEvent(@PathVariable String id, @RequestBody Event updatedEvent) {
         return eventRepository.findById(id)
             .map(event -> {
@@ -62,7 +62,7 @@ public class EventController {
             .orElseThrow();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deleteEvent/{id}")
     public void deleteEvent(@PathVariable String id) {
         eventRepository.deleteById(id);
     }
