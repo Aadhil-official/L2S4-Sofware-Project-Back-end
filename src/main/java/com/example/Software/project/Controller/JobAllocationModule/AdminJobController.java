@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/displayJob")
+@RequestMapping("/api/auth/displayJob")
 public class AdminJobController {
 
     private final JobListRepository jobRepository;

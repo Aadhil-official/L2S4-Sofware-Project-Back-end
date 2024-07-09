@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class UserJobListController {
 
     private final JobListRepository jobRepository;

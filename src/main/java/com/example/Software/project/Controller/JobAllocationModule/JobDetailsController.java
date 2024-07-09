@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/jobs")
+@RequestMapping("/api/auth/jobs")
 public class JobDetailsController {
 
     private final JobsService jobsService;
