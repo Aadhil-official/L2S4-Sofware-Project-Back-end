@@ -1,17 +1,18 @@
 package com.example.Software.project.Service.JobAllocationModule;
 
+
 import com.example.Software.project.Repo.JobAllocationModule.JobDetailsRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service("jobAllocationService")
 public class JobsService {
 
     private final JobDetailsRepo jobsRepository;
 
-    @Autowired
+
     public JobsService(JobDetailsRepo jobsRepository) {
         this.jobsRepository = jobsRepository;
     }

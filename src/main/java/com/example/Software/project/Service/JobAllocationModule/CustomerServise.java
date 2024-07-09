@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class CustomerServise {
 
-    @Autowired
+
     private CustomerRepository customerRepository;
 
     public static List<JobListEntity> getAllMembers() {

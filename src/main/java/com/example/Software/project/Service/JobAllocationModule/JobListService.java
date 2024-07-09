@@ -12,7 +12,7 @@ public class JobListService {
 
     private final JobListRepository jobRepository;
 
-    @Autowired
+
     public JobListService(JobListRepository jobRepository) {
         this.jobRepository = jobRepository;
     }

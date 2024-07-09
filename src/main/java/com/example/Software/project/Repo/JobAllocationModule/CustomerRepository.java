@@ -3,7 +3,7 @@
 
 package com.example.Software.project.Repo.JobAllocationModule;
 
-import com.example.project_backend.Entity.Customer;
+import com.example.Software.project.Entity.JobAllocationModule.Customer;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

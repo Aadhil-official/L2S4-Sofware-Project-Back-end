@@ -25,7 +25,7 @@ public class AdminJobController {
         this.jobListService = jobListService;
     }
 
-    @GetMapping
+    @GetMapping("/getList")
     public List<JobListEntity> getAllJobs() {
 
         return jobListService.getAllJobs();
