@@ -53,4 +53,12 @@ public class EmailService {
             );
         }
     }
+
+    public void sendSimpleEmail(String to, String subject, String text) {
+    }
+
+    public boolean isMailServerConfigured() {
+
+        return false;
+    }
 }

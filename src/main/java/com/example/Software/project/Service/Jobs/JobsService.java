@@ -17,8 +17,11 @@ import java.util.stream.Collectors;
 @Service
 public class JobsService {
 
-    @Autowired
-    private JobsRepository jobsRepository;
+    private final JobsRepository jobsRepository;
+
+    public JobsService(JobsRepository jobsRepository) {
+        this.jobsRepository = jobsRepository;
+    }
 
     public Map<String, Long> getCurrentMonthStatus() {
         List<Jobs> jobs = jobsRepository.findAll();

@@ -17,8 +17,11 @@ import java.util.stream.Collectors;
 @Service
 public class VisitsService {
 
-    @Autowired
-    private VisitsRepository visitsRepository;
+    private final VisitsRepository visitsRepository;
+
+    public VisitsService(VisitsRepository visitsRepository) {
+        this.visitsRepository = visitsRepository;
+    }
 
 
     public Map<String, Long> getCurrentMonthStatus() {
