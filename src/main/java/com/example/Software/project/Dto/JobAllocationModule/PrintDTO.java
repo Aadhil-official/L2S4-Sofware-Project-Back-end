@@ -1,7 +1,7 @@
 package com.example.Software.project.Dto.JobAllocationModule;
 
 import com.example.Software.project.Entity.JobAllocationModule.PrintPDFEntity;
-import jakarta.persistence.Id;
+import org.springframework.data.annotation.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
