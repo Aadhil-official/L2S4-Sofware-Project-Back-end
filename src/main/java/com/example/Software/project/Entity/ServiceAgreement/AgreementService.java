@@ -10,7 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Document (collection = "Agreement_service")
+@Document (collection = "agreements")
 public class AgreementService {
     @Id
     private String id;
