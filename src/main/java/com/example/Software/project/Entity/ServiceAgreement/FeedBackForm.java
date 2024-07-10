@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document(collection = "Feed Back Forms")
 public class FeedBackForm {
-
+@Id
     private String visitId;
     @NotBlank
     private String vehicleNumber;

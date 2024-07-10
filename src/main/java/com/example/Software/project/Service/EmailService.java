@@ -32,8 +32,8 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    // Scheduled task to run every day at 8 AM
-    @Scheduled(cron = "0 00 01 * * ?")
+    // Scheduled task to run every day at 12 AM
+    @Scheduled(cron = "0 45 08 * * ?")
     public void sendSiteVisitReminders() {
         LocalDate today = LocalDate.now();
         List<SiteVisit> visits = siteVisitRepo.findByScheduleDate(today.toString());
