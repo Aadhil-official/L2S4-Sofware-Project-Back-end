@@ -74,8 +74,8 @@ public class Insertarr {
                         "Password: " + pass + "\n\n" +
                         "Please change your password after logging in for the first time.\n\n" +
                         "Regards,\nYour Team";
-                authonticationController.sendEmail(adminUser.getEmail(), subject, message);
-//                sendEmail(adminUser.getEmail(), subject, message);
+//                authonticationController.sendEmail(adminUser.getEmail(), subject, message);
+                sendEmail(adminUser.getEmail(), subject, message);
             }
         };
     }
@@ -110,19 +110,19 @@ public class Insertarr {
         }
     }
 
-//
-//    private void sendEmail(String email, String subject, String message) {
-//        MimeMessage mimeMessage = emailSender.createMimeMessage();
-//        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-//        try {
-//            helper.setTo(email);
-//            helper.setSubject(subject);
-//            helper.setText(message);
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        }
-//        emailSender.send(mimeMessage);
-//    }
+
+    private void sendEmail(String email, String subject, String message) {
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+        try {
+            helper.setTo(email);
+            helper.setSubject(subject);
+            helper.setText(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        emailSender.send(mimeMessage);
+    }
 
     private String generateNumber() {
         Random random = new Random();
