@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Document(collection = "jobs")
+@Document(collection = "Job")
 public class Jobs {
 
     @Id

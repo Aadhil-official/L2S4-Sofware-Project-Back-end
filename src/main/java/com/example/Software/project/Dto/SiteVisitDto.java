@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Data
 @Document
-
 public class SiteVisitDto {
     private String visitId;
     @NotBlank
