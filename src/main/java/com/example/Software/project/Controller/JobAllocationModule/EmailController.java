@@ -5,7 +5,7 @@ import com.example.Software.project.Service.JobAllocationModule.EmailServicejob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "*",maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth/email")
 public class EmailController {

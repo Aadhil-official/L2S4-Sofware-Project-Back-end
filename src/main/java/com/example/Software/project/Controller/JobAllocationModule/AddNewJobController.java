@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.Software.project.Dto.JobAllocationModule.CustomerDTO;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "*",maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AddNewJobController {
-
 
     private final CustomerServise CustomerServise;
 
