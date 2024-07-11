@@ -1,5 +1,6 @@
 package com.example.Software.project.Entity.JobAllocationModule;
 
+import com.example.Software.project.Dto.JobAllocationModule.TeamMemberDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,5 +29,5 @@ public class JobListEntity {
 
     private String vehicleNumber;
     private String status;
-    private String teamMembers;
+    private List<TeamMemberDTO> teamMembers;
 }

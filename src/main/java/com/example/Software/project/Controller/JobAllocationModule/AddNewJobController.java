@@ -13,16 +13,16 @@ import com.example.Software.project.Dto.JobAllocationModule.CustomerDTO;
 @RequestMapping("/api/auth")
 public class AddNewJobController {
 
-    private final CustomerServise CustomerServise;
+    private final CustomerServise customerServise;
 
     @Autowired
     public AddNewJobController(CustomerServise customerServise) {
-        this.CustomerServise = customerServise;
+        this.customerServise = customerServise;
     }
 
     @PostMapping("/addNewJob")
     public String createCustomer(@RequestBody CustomerDTO customerDTO) {
-        CustomerServise.saveCustomer(customerDTO);
+        customerServise.saveCustomer(customerDTO);
         return "Customer saved successfully!";
     }
 }
