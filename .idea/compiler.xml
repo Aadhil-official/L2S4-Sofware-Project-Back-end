@@ -14,7 +14,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Software-project" options="" />
+      <module name="Software-project" options="-parameters" />
       <module name="SpringMongoPoject" options="-parameters" />
     </option>
   </component>
