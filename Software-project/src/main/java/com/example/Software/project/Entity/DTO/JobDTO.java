@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
-public class JobDTO {
+
     private String id;
 
     @NotBlank
