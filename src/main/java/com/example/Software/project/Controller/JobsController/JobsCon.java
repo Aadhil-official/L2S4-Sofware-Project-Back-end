@@ -59,10 +59,12 @@ public class JobsCon {
                     return ResponseEntity.badRequest().body("User not found");
                 }
             }
-            if (!jobsRepo.existsByVehicleNumber(job.getVehicleNumber()) && !jobsRepo.existsByDate(job.getDate())) {
+            if (!jobsRepo.existsByCustomerNumber(job.getCustomerNumber())) {
+//                !jobsRepo.existsByVehicleNumber(job.getVehicleNumber()) &&
                 jobsRepo.save(job);
             } else {
-                return ResponseEntity.badRequest().body("Vehicle not available");
+                return ResponseEntity.badRequest().body("Customer number already exist");
+//                Vehicle not available or
             }
 
             String subject = "New job is allocated";
@@ -100,6 +102,7 @@ public class JobsCon {
                 job.setVehicleNumber(jobDTO.getVehicleNumber());
                 job.setStatus(jobDTO.getStatus());
                 job.setCustomerName(jobDTO.getCustomerName());
+                job.setCustomerNumber(jobDTO.getCustomerNumber());
                 job.setDate(jobDTO.getDate());
                 job.setTeamMembers(jobDTO.getTeamMembers());
 

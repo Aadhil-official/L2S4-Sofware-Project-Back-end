@@ -349,7 +349,13 @@ public class AuthonticationController {
                     userDtoRoleNames.add(String.valueOf(name));
                 }
 
-                if (!Objects.equals(userDto.getRoles().toString(), user.getRoles().toString())) {
+                Set<String> userRole = new HashSet<>();
+                for (Role role1 : user.getRoles()) {
+                    LogRole name = role1.getName();
+                    userRole.add(String.valueOf(name));
+                }
+
+                if (!Objects.equals(userDtoRoleNames.toString(), userRole.toString())) {
                     String newRoles = String.join(", ", userDtoRoleNames);
                     role = "Your role is changed with: " + newRoles + "\n";
                 }
@@ -376,8 +382,7 @@ public class AuthonticationController {
                 if (!username.isEmpty() || !address.isEmpty() || !userGroup.isEmpty() || !tel.isEmpty() || !role.isEmpty() || !email.isEmpty()) {
                     sendEmail(emailSend, subject, object);
                 }
-                if ((((!userRepository.existsByUsername(userDto.getUsername())) || username.isEmpty()) && ((!userRepository.existsByEmail(userDto.getEmail())) || email.isEmpty())))
-                {
+                if ((((!userRepository.existsByUsername(userDto.getUsername())) || username.isEmpty()) && ((!userRepository.existsByEmail(userDto.getEmail())) || email.isEmpty()))) {
 //                System.out.println(user);
                     user.setUsername(userDto.getUsername());
                     user.setAddress(userDto.getAddress());
@@ -413,10 +418,12 @@ public class AuthonticationController {
                     // Assuming roles should not be updated here, else handle role updates similarly
                     userRepository.save(user);
                     return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
-                }else {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(" Username or email is already exists ");
-                }
+                } else if (userRepository.existsByUsername(userDto.getUsername()) && !username.isEmpty()) {
+                    return ResponseEntity.badRequest().body("Username is already exists");
                 } else {
+                    return ResponseEntity.badRequest().body("Email is already exists");
+                }
+            } else{
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with ID " + userDto.getId() + " not found");
             }
         } catch (Exception e) {

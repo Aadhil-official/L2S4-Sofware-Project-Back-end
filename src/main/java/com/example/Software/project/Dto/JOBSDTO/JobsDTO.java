@@ -21,6 +21,9 @@ public class JobsDTO {
     private String vehicleNumber;
 
     @NotBlank
+    private String customerNumber;
+
+    @NotBlank
     private String status;
 
     @NotBlank

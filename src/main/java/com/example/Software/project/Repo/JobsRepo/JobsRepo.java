@@ -5,5 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface JobsRepo extends MongoRepository<Job,String> {
     Boolean existsByVehicleNumber(String vehicleNumber);
-    Boolean existsByDate(String date);
+    Boolean existsByCustomerNumber(String customerNumber);
 }
